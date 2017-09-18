@@ -4,7 +4,6 @@ namespace marvin255\bxcontent;
 
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Page\Asset;
-use marvin255\bxcontent\SnippetManager;
 use CJSCore;
 
 Loc::loadMessages(__FILE__);
@@ -33,8 +32,8 @@ class PropertyTypeContent extends \CUserTypeString
     /**
      * Возвращает html для поля для ввода, которое отбразится в административной части.
      *
-     * @param array $arProperty Свойства поля из настроек административной части
-     * @param array $value Массив со значениями поля из битрикса
+     * @param array $arProperty         Свойства поля из настроек административной части
+     * @param array $value              Массив со значениями поля из битрикса
      * @param array $strHTMLControlName Массив с именами для элементов поля из битрикса
      *
      * @return string

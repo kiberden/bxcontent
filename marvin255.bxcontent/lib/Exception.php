@@ -7,5 +7,4 @@ namespace marvin255\bxcontent;
  */
 class Exception extends \ErrorException
 {
-
 }

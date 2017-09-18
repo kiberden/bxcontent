@@ -126,14 +126,14 @@ class marvin255_bxcontent extends CModule
                 'EVENT_TYPE' => 'OnUserTypeBuildList',
                 'TO_CLASS' => '\marvin255\bxcontent\UserTypeContent',
                 'TO_METHOD' => 'GetUserTypeDescription',
-                'SORT' => '1800'
+                'SORT' => '1800',
             ],
             [
                 'FROM_MODULE_ID' => 'iblock',
                 'EVENT_TYPE' => 'OnIBlockPropertyBuildList',
                 'TO_CLASS' => '\marvin255\bxcontent\PropertyTypeContent',
                 'TO_METHOD' => 'GetUserTypeDescription',
-                'SORT' => '1800'
+                'SORT' => '1800',
             ],
         ];
     }

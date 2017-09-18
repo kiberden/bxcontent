@@ -4,7 +4,6 @@ namespace marvin255\bxcontent;
 
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Page\Asset;
-use marvin255\bxcontent\SnippetManager;
 use CJSCore;
 
 Loc::loadMessages(__FILE__);
@@ -33,7 +32,7 @@ class UserTypeContent
     /**
      * Возвращает html для поля для ввода, которое отбразится в административной части.
      *
-     * @param array $field Свойства поля из настроек административной части
+     * @param array $field   Свойства поля из настроек административной части
      * @param array $control Массив с именами для элементов поля из битрикса
      *
      * @return string
@@ -47,7 +46,6 @@ class UserTypeContent
 
         return $return;
     }
-
 
     /**
      * Возвращает описание колонки в базе данных, которая будет создана для сущности.
