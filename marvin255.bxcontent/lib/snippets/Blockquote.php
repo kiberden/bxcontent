@@ -2,7 +2,6 @@
 
 namespace marvin255\bxcontent\snippets;
 
-use marvin255\bxcontent\controls\Combine;
 use marvin255\bxcontent\controls\Input;
 use marvin255\bxcontent\controls\File;
 use marvin255\bxcontent\controls\Editor;

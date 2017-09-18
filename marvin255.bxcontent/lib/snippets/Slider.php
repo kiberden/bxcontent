@@ -33,7 +33,7 @@ class Slider extends Base
                         'label' => 'Подпись',
                     ]),
                 ],
-            ])
+            ]),
         ];
 
         parent::__construct($settings);
