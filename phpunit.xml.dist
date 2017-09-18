@@ -16,6 +16,8 @@
             <directory>marvin255.bxcontent/lib</directory>
             <exclude>
                 <file>marvin255.bxcontent/lib/Autoloader.php</file>
+                <file>marvin255.bxcontent/lib/PropertyTypeContent.php</file>
+                <file>marvin255.bxcontent/lib/UserTypeContent.php</file>
             </exclude>
         </whitelist>
     </filter>

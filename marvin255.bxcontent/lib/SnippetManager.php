@@ -30,11 +30,13 @@ class SnippetManager implements JsonSerializable
      * Возвращает объект singleton, если он уже создан, либо создает новый
      * и возвращает новый.
      *
+     * @param bool $refresh Флаг, который указывает, что инстанс нужно пересоздать заново.
+     *
      * @return \marvin255\bxfoundation\application\Application
      */
-    public static function getInstance()
+    public static function getInstance($refresh = false)
     {
-        return self::$instance === null
+        return self::$instance === null || $refresh
             ? self::$instance = new self
             : self::$instance;
     }
@@ -43,20 +45,6 @@ class SnippetManager implements JsonSerializable
      * Реализация singleton. Запрещает создание новых объектов.
      */
     private function __construct()
-    {
-    }
-
-    /**
-     * Реализация singleton. Запрещает клонирование объектов.
-     */
-    private function __clone()
-    {
-    }
-
-    /**
-     * Реализация singleton. Запрещает извлечение сериализованных объектов.
-     */
-    private function __wakeup()
     {
     }
 
@@ -90,8 +78,8 @@ class SnippetManager implements JsonSerializable
      */
     public function remove($type)
     {
-        if ($this->get($snippet->getType()) !== null) {
-            throw new Exception('Can\'t find snippet with type ' . $snippet->getType() . ' to unset');
+        if ($this->get($type) === null) {
+            throw new Exception('Can\'t find snippet with type ' . $type . ' to unset');
         }
         unset($this->snippets[$type]);
 
