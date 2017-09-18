@@ -2,7 +2,7 @@
 
 namespace marvin255\bxcontent\tests\lib\snippets;
 
-class InputTest extends \PHPUnit_Framework_TestCase
+class FileTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetType()
     {
@@ -13,10 +13,10 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'multiple' => true,
         ];
 
-        $input = new \marvin255\bxcontent\controls\Input($arConfig);
+        $input = new \marvin255\bxcontent\controls\File($arConfig);
 
         $this->assertSame(
-            'input',
+            'file',
             $input->getType()
         );
     }
@@ -29,7 +29,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'multiple' => true,
         ];
 
-        $input = new \marvin255\bxcontent\controls\Input($arConfig);
+        $input = new \marvin255\bxcontent\controls\File($arConfig);
 
         $this->assertSame(
             $arConfig['name'],
@@ -45,7 +45,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'multiple' => true,
         ];
 
-        $input = new \marvin255\bxcontent\controls\Input($arConfig);
+        $input = new \marvin255\bxcontent\controls\File($arConfig);
 
         $this->assertSame(
             $arConfig['label'],
@@ -61,7 +61,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
             'multiple' => true,
         ];
 
-        $input = new \marvin255\bxcontent\controls\Input($arConfig);
+        $input = new \marvin255\bxcontent\controls\File($arConfig);
 
         $this->assertSame(
             $arConfig['multiple'],
@@ -72,14 +72,14 @@ class InputTest extends \PHPUnit_Framework_TestCase
     public function testJsonSerialize()
     {
         $arConfig = [
-            'type' => 'input',
+            'type' => 'file',
             'label' => 'label_' . mt_rand(),
             'name' => 'name_' . mt_rand(),
             'multiple' => true,
         ];
         ksort($arConfig);
 
-        $input = new \marvin255\bxcontent\controls\Input($arConfig);
+        $input = new \marvin255\bxcontent\controls\File($arConfig);
 
         $return = $input->jsonSerialize();
         ksort($return);
@@ -97,7 +97,7 @@ class InputTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->setExpectedException('\marvin255\bxcontent\Exception', 'name');
-        $snippet = new \marvin255\bxcontent\controls\Input($arConfig);
+        $snippet = new \marvin255\bxcontent\controls\File($arConfig);
     }
 
     public function testEmptyLabelException()
@@ -108,6 +108,6 @@ class InputTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->setExpectedException('\marvin255\bxcontent\Exception', 'label');
-        $snippet = new \marvin255\bxcontent\controls\Input($arConfig);
+        $snippet = new \marvin255\bxcontent\controls\File($arConfig);
     }
 }
