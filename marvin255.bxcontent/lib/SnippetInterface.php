@@ -30,13 +30,6 @@ interface SnippetInterface
     public function getControls();
 
     /**
-     * Возвращет правду, если можно созать несколько экземпляров данного сниппета.
-     *
-     * @return bool
-     */
-    public function getMultiple();
-
-    /**
      * Возвращет объект для отображения сниппета или строку с вызовом компонента для отображения.
      *
      * @return string

@@ -79,7 +79,6 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
         $type = 'type_' . mt_rand();
         $controls = ['control_' . mt_rand()];
         $label = 'label_' . mt_rand();
-        $multiple = true;
         $serializeKey = 'serializeKey_' . mt_rand();
         $serializeValue = 'serializeValue_' . mt_rand();
         $serialize = [
@@ -92,7 +91,6 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
                 'label' => $label,
                 'type' => $type,
                 'controls' => $controls,
-                'multiple' => $multiple,
                 $serializeKey => $serializeValue,
             ],
         ];
@@ -105,7 +103,6 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
         $snippet->method('getType')->will($this->returnValue($type));
         $snippet->method('getControls')->will($this->returnValue($controls));
         $snippet->method('getLabel')->will($this->returnValue($label));
-        $snippet->method('getMultiple')->will($this->returnValue($multiple));
         $snippet->method('jsonSerialize')->will($this->returnValue($serialize));
 
         $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);

@@ -68,10 +68,6 @@ class Base implements SnippetInterface, JsonSerializable
             throw new Exception('Snippet\'s controls must be a non empty array instance');
         }
 
-        if (isset($this->settings['multiple']) && !is_bool($this->settings['multiple'])) {
-            throw new Exception('Snippet\'s multiple must be a bool instance');
-        }
-
         return $this;
     }
 
@@ -97,14 +93,6 @@ class Base implements SnippetInterface, JsonSerializable
     public function getControls()
     {
         return $this->settings['controls'];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getMultiple()
-    {
-        return isset($this->settings['multiple']) ? $this->settings['multiple'] : false;
     }
 
     /**

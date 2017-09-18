@@ -10,7 +10,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
             'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
             'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'multiple' => true,
             'key_' . mt_rand() => 'value_' . mt_rand(),
         ];
 
@@ -28,7 +27,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
             'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
             'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'multiple' => true,
             'key_' . mt_rand() => 'value_' . mt_rand(),
         ];
 
@@ -46,7 +44,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
             'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
             'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'multiple' => true,
             'key_' . mt_rand() => 'value_' . mt_rand(),
         ];
 
@@ -58,31 +55,12 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetMultiple()
-    {
-        $arConfig = [
-            'type' => 'type_' . mt_rand(),
-            'label' => 'label_' . mt_rand(),
-            'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'multiple' => true,
-            'key_' . mt_rand() => 'value_' . mt_rand(),
-        ];
-
-        $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
-
-        $this->assertSame(
-            $arConfig['multiple'],
-            $snippet->getMultiple()
-        );
-    }
-
     public function testJsonSerialize()
     {
         $arConfig = [
             'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
             'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'multiple' => true,
             'key_' . mt_rand() => 'value_' . mt_rand(),
         ];
         ksort($arConfig);
@@ -102,7 +80,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         $arConfig = [
             'label' => 'label_' . mt_rand(),
             'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'multiple' => true,
             'key_' . mt_rand() => 'value_' . mt_rand(),
         ];
 
@@ -115,7 +92,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         $arConfig = [
             'type' => 'type_' . mt_rand(),
             'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'multiple' => true,
             'key_' . mt_rand() => 'value_' . mt_rand(),
         ];
 
@@ -128,7 +104,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         $arConfig = [
             'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
-            'multiple' => true,
             'key_' . mt_rand() => 'value_' . mt_rand(),
         ];
 
@@ -142,25 +117,10 @@ class BaseTest extends \PHPUnit_Framework_TestCase
             'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
             'controls' => 123,
-            'multiple' => true,
             'key_' . mt_rand() => 'value_' . mt_rand(),
         ];
 
         $this->setExpectedException('\marvin255\bxcontent\Exception', 'controls');
-        $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
-    }
-
-    public function testNonBoolMultipleException()
-    {
-        $arConfig = [
-            'type' => 'type_' . mt_rand(),
-            'label' => 'label_' . mt_rand(),
-            'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'multiple' => 123,
-            'key_' . mt_rand() => 'value_' . mt_rand(),
-        ];
-
-        $this->setExpectedException('\marvin255\bxcontent\Exception', 'multiple');
         $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
     }
 }
