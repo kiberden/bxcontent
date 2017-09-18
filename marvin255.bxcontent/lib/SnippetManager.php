@@ -121,8 +121,8 @@ class SnippetManager implements JsonSerializable
     /**
      * Регистриует все ассеты для отображения полей в админке.
      *
-     * @param \Bitrix\Main\Page\Asset $asset Менеджер ассетов битрикса
-     * @param string $parameterName Название параметра, в котором будут переданы все настройки сниппетов
+     * @param \Bitrix\Main\Page\Asset $asset         Менеджер ассетов битрикса
+     * @param string                  $parameterName Название параметра, в котором будут переданы все настройки сниппетов
      *
      * @return \marvin255\bxcontent\SnippetManager
      */
