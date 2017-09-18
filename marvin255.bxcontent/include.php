@@ -8,6 +8,9 @@ require_once __DIR__ . '/lib/Autoloader.php';
 
 $snippetManager = SnippetManager::getInstance(true);
 
+$snippetManager->set(new \marvin255\bxcontent\snippets\Slider);
+$snippetManager->set(new \marvin255\bxcontent\snippets\Blockquote);
+
 $event = new Event(
     'marvin255.bxcontent',
     'collectSnippets',
