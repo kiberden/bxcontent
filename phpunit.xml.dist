@@ -13,9 +13,9 @@
 
     <filter>
         <whitelist>
-            <directory>src/lib</directory>
+            <directory>marvin255.bxcontent/lib</directory>
             <exclude>
-                <file>src/lib/Autoloader.php</file>
+                <file>marvin255.bxcontent/lib/Autoloader.php</file>
             </exclude>
         </whitelist>
     </filter>
