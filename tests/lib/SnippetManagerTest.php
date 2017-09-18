@@ -105,7 +105,7 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
         $snippet->method('getType')->will($this->returnValue($type));
         $snippet->method('getControls')->will($this->returnValue($controls));
         $snippet->method('getLabel')->will($this->returnValue($label));
-        $snippet->method('getIsMultiple')->will($this->returnValue($multiple));
+        $snippet->method('getMultiple')->will($this->returnValue($multiple));
         $snippet->method('jsonSerialize')->will($this->returnValue($serialize));
 
         $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);

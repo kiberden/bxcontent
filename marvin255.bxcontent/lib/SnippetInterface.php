@@ -34,7 +34,7 @@ interface SnippetInterface
      *
      * @return bool
      */
-    public function getIsMultiple();
+    public function getMultiple();
 
     /**
      * Возвращет объект для отображения сниппета или строку с вызовом компонента для отображения.

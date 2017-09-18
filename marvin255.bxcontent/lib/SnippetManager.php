@@ -114,7 +114,7 @@ class SnippetManager implements JsonSerializable
             $return[$type]['type'] = $snippet->getType();
             $return[$type]['controls'] = $snippet->getControls();
             $return[$type]['label'] = $snippet->getLabel();
-            $return[$type]['multiple'] = $snippet->getIsMultiple();
+            $return[$type]['multiple'] = $snippet->getMultiple();
         }
 
         return $return;
