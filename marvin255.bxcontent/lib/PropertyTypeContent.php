@@ -4,7 +4,6 @@ namespace marvin255\bxcontent;
 
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Page\Asset;
-use CJSCore;
 
 Loc::loadMessages(__FILE__);
 
@@ -40,24 +39,12 @@ class PropertyTypeContent extends \CUserTypeString
      */
     public function getPropertyFieldHtml($arProperty, $value, $strHTMLControlName)
     {
-        self::registerAssets();
+        SnippetManager::getInstance()->registerAssets(Asset::getInstance());
+
         $return = '<textarea style="display: none;" class="marvin255bxcontent-init" name="' . htmlentities($strHTMLControlName['VALUE']) . '">';
         $return .= htmlentities($value['VALUE']);
         $return .= '</textarea>';
 
         return $return;
-    }
-
-    /**
-     * Регистрирует все js и css файлы, которые необходимы для работы поля.
-     */
-    protected static function registerAssets()
-    {
-        $managerData = '<script>window.marvin255bxcontent = ';
-        $managerData .= json_encode(SnippetManager::getInstance());
-        $managerData .= ';</script>';
-        Asset::getInstance()->addString($managerData, true);
-
-        CJSCore::Init(['jquery']);
     }
 }

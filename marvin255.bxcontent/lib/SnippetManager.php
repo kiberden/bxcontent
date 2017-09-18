@@ -2,6 +2,7 @@
 
 namespace marvin255\bxcontent;
 
+use Bitrix\Main\Page\Asset;
 use JsonSerializable;
 
 /**
@@ -115,5 +116,21 @@ class SnippetManager implements JsonSerializable
         }
 
         return $return;
+    }
+
+    /**
+     * Регистриует все ассеты для отображения полей в админке.
+     *
+     * @param \Bitrix\Main\Page\Asset $asset Менеджер ассетов битрикса
+     * @param string $parameterName Название параметра, в котором будут переданы все настройки сниппетов
+     *
+     * @return \marvin255\bxcontent\SnippetManager
+     */
+    public function registerAssets(Asset $asset, $parameterName = 'marvin255bxcontent')
+    {
+        $managerData = "<script>window.{$parameterName} = ";
+        $managerData .= json_encode($this);
+        $managerData .= ';</script>';
+        $asset->addString($managerData, true);
     }
 }

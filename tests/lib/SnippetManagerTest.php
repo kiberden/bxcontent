@@ -105,4 +105,40 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
             $return
         );
     }
+
+    public function testRegisterAssets()
+    {
+        $parameterName = 'parameter_' . mt_rand();
+        $type = 'type_' . mt_rand();
+        $controls = ['control_' . mt_rand()];
+        $label = 'label_' . mt_rand();
+
+        $etalon = [
+            $type => [
+                'type' => $type,
+                'label' => $label,
+                'controls' => $controls,
+            ],
+        ];
+
+        $managerData = "<script>window.{$parameterName} = ";
+        $managerData .= json_encode($etalon);
+        $managerData .= ';</script>';
+
+        $snippet = $this->getMockBuilder('\marvin255\bxcontent\SnippetInterface')->getMock();
+        $snippet->method('getType')->will($this->returnValue($type));
+        $snippet->method('getControls')->will($this->returnValue($controls));
+        $snippet->method('getLabel')->will($this->returnValue($label));
+
+        $asset = $this->getMockBuilder('\Bitrix\Main\Page\Asset')
+            ->setMethods(['addString'])
+            ->getMock();
+        $asset->expects($this->at(0))
+            ->method('addString')
+            ->with($this->equalTo($managerData), $this->equalTo(true));
+
+        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
+
+        $manager->set($snippet)->registerAssets($asset, $parameterName);
+    }
 }

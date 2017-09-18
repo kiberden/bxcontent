@@ -4,7 +4,6 @@ namespace marvin255\bxcontent;
 
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Page\Asset;
-use CJSCore;
 
 Loc::loadMessages(__FILE__);
 
@@ -39,7 +38,8 @@ class UserTypeContent
      */
     public function GetEditFormHTML($field, $control)
     {
-        self::registerAssets();
+        SnippetManager::getInstance()->registerAssets(Asset::getInstance());
+
         $return = '<textarea style="display: none;" class="marvin255bxcontent-init" name="' . htmlentities($control['NAME']) . '">';
         $return .= htmlentities(isset($field['VALUE']) ? $field['VALUE'] : '');
         $return .= '</textarea>';
@@ -53,18 +53,5 @@ class UserTypeContent
     public function GetDBColumnType($field)
     {
         return 'text';
-    }
-
-    /**
-     * Регистрирует все js и css файлы, которые необходимы для работы поля.
-     */
-    protected static function registerAssets()
-    {
-        $managerData = '<script>window.marvin255bxcontent = ';
-        $managerData .= json_encode(SnippetManager::getInstance());
-        $managerData .= ';</script>';
-        Asset::getInstance()->addString($managerData, true);
-
-        CJSCore::Init(['jquery']);
     }
 }
