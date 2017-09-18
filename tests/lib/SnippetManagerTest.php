@@ -79,31 +79,20 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
         $type = 'type_' . mt_rand();
         $controls = ['control_' . mt_rand()];
         $label = 'label_' . mt_rand();
-        $serializeKey = 'serializeKey_' . mt_rand();
-        $serializeValue = 'serializeValue_' . mt_rand();
-        $serialize = [
-            'type' => 'not_' . $type,
-            $serializeKey => $serializeValue,
-        ];
 
         $etalon = [
             $type => [
                 'label' => $label,
                 'type' => $type,
                 'controls' => $controls,
-                $serializeKey => $serializeValue,
             ],
         ];
         ksort($etalon[$type]);
 
-        $snippet = $this->getMockBuilder([
-            '\marvin255\bxcontent\SnippetInterface',
-            'JsonSerializable',
-        ])->getMock();
+        $snippet = $this->getMockBuilder('\marvin255\bxcontent\SnippetInterface')->getMock();
         $snippet->method('getType')->will($this->returnValue($type));
         $snippet->method('getControls')->will($this->returnValue($controls));
         $snippet->method('getLabel')->will($this->returnValue($label));
-        $snippet->method('jsonSerialize')->will($this->returnValue($serialize));
 
         $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
 

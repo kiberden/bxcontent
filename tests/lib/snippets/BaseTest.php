@@ -9,8 +9,10 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         $arConfig = [
             'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
-            'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'key_' . mt_rand() => 'value_' . mt_rand(),
+            'controls' => [
+                $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+                    ->getMock(),
+            ],
         ];
 
         $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
@@ -26,8 +28,10 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         $arConfig = [
             'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
-            'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'key_' . mt_rand() => 'value_' . mt_rand(),
+            'controls' => [
+                $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+                    ->getMock(),
+            ],
         ];
 
         $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
@@ -40,38 +44,22 @@ class BaseTest extends \PHPUnit_Framework_TestCase
 
     public function testGetControls()
     {
+        $controlKey = 'controls_key_' . mt_rand();
+        $control = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+            ->getMock();
+        $control->method('getName')->will($this->returnValue($controlKey));
+
         $arConfig = [
             'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
-            'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'key_' . mt_rand() => 'value_' . mt_rand(),
+            'controls' => [$control],
         ];
 
         $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
 
         $this->assertSame(
-            $arConfig['controls'],
+            [$controlKey => $control],
             $snippet->getControls()
-        );
-    }
-
-    public function testJsonSerialize()
-    {
-        $arConfig = [
-            'type' => 'type_' . mt_rand(),
-            'label' => 'label_' . mt_rand(),
-            'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'key_' . mt_rand() => 'value_' . mt_rand(),
-        ];
-        ksort($arConfig);
-
-        $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
-
-        $return = $snippet->jsonSerialize();
-        ksort($return);
-        $this->assertSame(
-            $arConfig,
-            $return
         );
     }
 
@@ -79,8 +67,10 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     {
         $arConfig = [
             'label' => 'label_' . mt_rand(),
-            'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'key_' . mt_rand() => 'value_' . mt_rand(),
+            'controls' => [
+                $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+                    ->getMock(),
+            ],
         ];
 
         $this->setExpectedException('\marvin255\bxcontent\Exception', 'type');
@@ -91,8 +81,10 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     {
         $arConfig = [
             'type' => 'type_' . mt_rand(),
-            'controls' => ['controls_key_' . mt_rand(), 'controls_value_' . mt_rand()],
-            'key_' . mt_rand() => 'value_' . mt_rand(),
+            'controls' => [
+                $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+                    ->getMock(),
+            ],
         ];
 
         $this->setExpectedException('\marvin255\bxcontent\Exception', 'label');
@@ -104,7 +96,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         $arConfig = [
             'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
-            'key_' . mt_rand() => 'value_' . mt_rand(),
         ];
 
         $this->setExpectedException('\marvin255\bxcontent\Exception', 'controls');
@@ -117,10 +108,41 @@ class BaseTest extends \PHPUnit_Framework_TestCase
             'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
             'controls' => 123,
-            'key_' . mt_rand() => 'value_' . mt_rand(),
         ];
 
         $this->setExpectedException('\marvin255\bxcontent\Exception', 'controls');
+        $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
+    }
+
+    public function testWrongControlsInstanceException()
+    {
+        $arConfig = [
+            'type' => 'type_' . mt_rand(),
+            'label' => 'label_' . mt_rand(),
+            'controls' => ['test_key' => 123],
+        ];
+
+        $this->setExpectedException('\marvin255\bxcontent\Exception', 'test_key');
+        $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
+    }
+
+    public function testNameDoublingControlsException()
+    {
+        $controlKey = 'controls_key_' . mt_rand();
+        $control = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+            ->getMock();
+        $control->method('getName')->will($this->returnValue($controlKey));
+
+        $arConfig = [
+            'type' => 'type_' . mt_rand(),
+            'label' => 'label_' . mt_rand(),
+            'controls' => [
+                $control,
+                $control,
+            ],
+        ];
+
+        $this->setExpectedException('\marvin255\bxcontent\Exception', $controlKey);
         $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
     }
 }

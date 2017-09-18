@@ -107,13 +107,11 @@ class SnippetManager implements JsonSerializable
     {
         $return = [];
         foreach ($this->snippets as $type => $snippet) {
-            $return[$type] = [];
-            if ($snippet instanceof JsonSerializable) {
-                $return[$type] = $snippet->jsonSerialize();
-            }
-            $return[$type]['type'] = $snippet->getType();
-            $return[$type]['controls'] = $snippet->getControls();
-            $return[$type]['label'] = $snippet->getLabel();
+            $return[$type] = [
+                'type' => $snippet->getType(),
+                'label' => $snippet->getLabel(),
+                'controls' => $snippet->getControls(),
+            ];
         }
 
         return $return;

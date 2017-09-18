@@ -3,14 +3,14 @@
 namespace marvin255\bxcontent\snippets;
 
 use marvin255\bxcontent\SnippetInterface;
+use marvin255\bxcontent\ControlInterface;
 use marvin255\bxcontent\Exception;
-use JsonSerializable;
 
 /**
  * Базовый сниппет, получает данные из массива в конструкторе
  * и проверяет их на валидность.
  */
-class Base implements SnippetInterface, JsonSerializable
+class Base implements SnippetInterface
 {
     /**
      * Настройки сниппета, вида "название поля => значение".
@@ -66,6 +66,17 @@ class Base implements SnippetInterface, JsonSerializable
 
         if (empty($this->settings['controls']) || !is_array($this->settings['controls'])) {
             throw new Exception('Snippet\'s controls must be a non empty array instance');
+        } else {
+            $controls = [];
+            foreach ($this->settings['controls'] as $key => $control) {
+                if (!($control instanceof ControlInterface)) {
+                    throw new Exception("Control with key {$key} must be a ControlInterface instance");
+                } elseif (isset($controls[$control->getName()])) {
+                    throw new Exception('Control with name ' . $control->getName() . ' already exists');
+                }
+                $controls[$control->getName()] = $control;
+            }
+            $this->settings['controls'] = $controls;
         }
 
         return $this;
@@ -101,13 +112,5 @@ class Base implements SnippetInterface, JsonSerializable
     public function getRenderer()
     {
         return null;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function jsonSerialize()
-    {
-        return $this->settings;
     }
 }
