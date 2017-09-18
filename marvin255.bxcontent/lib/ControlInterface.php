@@ -32,9 +32,9 @@ interface ControlInterface extends JsonSerializable
     public function getLabel();
 
     /**
-     * Возвращет атрибуты элемента управления.
+     * Возвращает правду, если поле является множественным.
      *
-     * @return string
+     * @return bool
      */
-    public function getAttributes();
+    public function isMultiple();
 }
