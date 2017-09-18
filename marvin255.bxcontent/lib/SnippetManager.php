@@ -30,7 +30,7 @@ class SnippetManager implements JsonSerializable
      * Возвращает объект singleton, если он уже создан, либо создает новый
      * и возвращает новый.
      *
-     * @param bool $refresh Флаг, который указывает, что инстанс нужно пересоздать заново.
+     * @param bool $refresh Флаг, который указывает, что инстанс нужно пересоздать заново
      *
      * @return \marvin255\bxfoundation\application\Application
      */

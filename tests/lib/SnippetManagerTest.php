@@ -94,7 +94,7 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
                 'controls' => $controls,
                 'multiple' => $multiple,
                 $serializeKey => $serializeValue,
-            ]
+            ],
         ];
         ksort($etalon[$type]);
 

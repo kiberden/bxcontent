@@ -14,8 +14,7 @@ $event = new Event(
     ['snippetManager' => $snippetManager]
 );
 $event->send();
-foreach ($event->getResults() as $eventResult)
-{
+foreach ($event->getResults() as $eventResult) {
     if ($eventResult->getType() === EventResult::ERROR) {
         throw new Exception('Get error while collecting snippets: ' . implode(',', $eventResult->getErrorMessages()));
     }

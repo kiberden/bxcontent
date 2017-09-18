@@ -13,12 +13,11 @@ use JsonSerializable;
 class Base implements SnippetInterface, JsonSerializable
 {
     /**
-     * Настройки сниппета, вида "название поля => значение"
+     * Настройки сниппета, вида "название поля => значение".
      *
      * @var array
      */
     protected $settings = [];
-
 
     /**
      * Конструктор. Задает настройки сниппета из массива.
