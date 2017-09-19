@@ -89,8 +89,19 @@ class marvin255_bxcontent extends CModule
      */
     public function installFiles()
     {
-        CopyDirFiles($this->getInstallatorPath() . '/admin', $this->getComponentPath('admin'), true, true);
-        CopyDirFiles($this->getInstallatorPath() . '/components', $this->getComponentPath('components'), true, true);
+        CopyDirFiles(
+            $this->getInstallatorPath() . '/js',
+            Application::getDocumentRoot() . '/bitrix/js/' . $this->MODULE_ID,
+            true,
+            true
+        );
+
+        CopyDirFiles(
+            $this->getInstallatorPath() . '/css',
+            Application::getDocumentRoot() . '/bitrix/css/' . $this->MODULE_ID,
+            true,
+            true
+        );
 
         return true;
     }
@@ -102,13 +113,8 @@ class marvin255_bxcontent extends CModule
      */
     public function unInstallFiles()
     {
-        DeleteDirFiles($this->getInstallatorPath() . '/admin', $this->getComponentPath('admin'));
-        if (is_dir($this->getInstallatorPath() . '/components')) {
-            self::deleteByEtalon(
-                $this->getInstallatorPath() . '/components',
-                $this->getComponentPath('components')
-            );
-        }
+        Directory::deleteDirectory(Application::getDocumentRoot() . '/bitrix/js/' . $this->MODULE_ID);
+        Directory::deleteDirectory(Application::getDocumentRoot() . '/bitrix/css/' . $this->MODULE_ID);
 
         return true;
     }
@@ -139,38 +145,6 @@ class marvin255_bxcontent extends CModule
     }
 
     /**
-     * Проходится рекурсивно по содержимому папки назначения
-     * и удаляет из него все пути эталонной папки.
-     *
-     * @param string $etalon
-     * @param string $dest
-     */
-    protected static function deleteByEtalon($etalon, $dest)
-    {
-        $etalon = rtrim($etalon, '/\\');
-        $dest = rtrim($dest, '/\\');
-        if (!is_dir($etalon)) {
-            throw new InvalidArgumentException("Path is not a directory: {$etalon}");
-        } elseif (!is_dir($dest)) {
-            throw new InvalidArgumentException("Path is not a directory: {$dest}");
-        }
-        foreach (scandir($etalon) as $file) {
-            if ('.' === $file || '..' === $file || !file_exists($dest . '/' . $file)) {
-                continue;
-            }
-            if (is_dir($dest . '/' . $file)) {
-                self::deleteByEtalon($etalon . '/' . $file, $dest . '/' . $file);
-            } else {
-                unlink($dest . '/' . $file);
-            }
-        }
-        $content = array_diff(scandir($dest), ['..', '.']);
-        if (!$content) {
-            rmdir($dest);
-        }
-    }
-
-    /**
      * Возвращает путь к папке с модулем
      *
      * @return string
@@ -178,23 +152,5 @@ class marvin255_bxcontent extends CModule
     public function getInstallatorPath()
     {
         return str_replace('\\', '/', __DIR__);
-    }
-
-    /**
-     * Возвращает путь к папке, в которую будут установлены компоненты модуля.
-     *
-     * @param string $type тип компонентов для установки (components, js, admin и т.д.)
-     *
-     * @return string
-     */
-    public function getComponentPath($type = 'components')
-    {
-        if ($type === 'admin') {
-            $base = Application::getDocumentRoot() . '/bitrix';
-        } else {
-            $base = dirname(dirname(dirname($this->getInstallatorPath())));
-        }
-
-        return $base . '/' . str_replace(['/', '.'], '', $type);
     }
 }
