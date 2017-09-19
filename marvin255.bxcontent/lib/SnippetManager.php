@@ -19,13 +19,18 @@ class SnippetManager implements JsonSerializable
      * @var \marvin255\bxfoundation\application\Application
      */
     private static $instance = null;
-
     /**
      * Массив зарегистрированных сниппетов.
      *
      * @var array
      */
     protected $snippets = [];
+    /**
+     * Список js файлов, которые нужно зарегистрировать для текущего набора сниппетов.
+     *
+     * @var array
+     */
+    protected $js = [];
 
     /**
      * Возвращает объект singleton, если он уже создан, либо создает новый
@@ -119,6 +124,50 @@ class SnippetManager implements JsonSerializable
     }
 
     /**
+     * Возвращает набор js, которые зарегистриует данны объект.
+     *
+     * @return array
+     */
+    public function getJs()
+    {
+        return $this->js;
+    }
+
+    /**
+     * Задает список js для регистрации.
+     *
+     * @param array $js
+     *
+     * @return \marvin255\bxcontent\SnippetManager
+     */
+    public function setJs(array $js)
+    {
+        $this->js = [];
+        foreach ($js as $script) {
+            $this->addJs($script);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Добавляет скрипт к списку для регистрации
+     *
+     * @param string $script
+     *
+     * @return \marvin255\bxcontent\SnippetManager
+     */
+    public function addJs($script)
+    {
+        if (trim($script) === '') {
+            throw new Exception('Script name can\'t blank');
+        }
+        $this->js[] = $script;
+
+        return $this;
+    }
+
+    /**
      * Регистриует все ассеты для отображения полей в админке.
      *
      * @param \Bitrix\Main\Page\Asset $asset         Менеджер ассетов битрикса
@@ -128,6 +177,11 @@ class SnippetManager implements JsonSerializable
      */
     public function registerAssets(Asset $asset, $parameterName = 'marvin255bxcontent')
     {
+        $js = $this->getJs();
+        foreach ($js as $script) {
+            $asset->addJs($script, true);
+        }
+
         $managerData = "<script>window.{$parameterName} = ";
         $managerData .= json_encode($this);
         $managerData .= ';</script>';
