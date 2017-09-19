@@ -14,7 +14,7 @@ class Slider extends Base
     /**
      * @inheritdoc
      */
-    public function __construct(array $settings)
+    public function __construct(array $settings = array())
     {
         $settings['type'] = 'slider';
         $settings['label'] = 'Слайдер';

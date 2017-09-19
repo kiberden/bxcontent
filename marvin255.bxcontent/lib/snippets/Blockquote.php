@@ -14,7 +14,7 @@ class Blockquote extends Base
     /**
      * @inheritdoc
      */
-    public function __construct(array $settings)
+    public function __construct(array $settings = array())
     {
         $settings['type'] = 'blockquote';
         $settings['label'] = 'Цитата';
