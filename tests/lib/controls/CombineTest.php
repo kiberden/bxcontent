@@ -7,7 +7,7 @@ class CombineTest extends \PHPUnit_Framework_TestCase
     public function testGetType()
     {
         $elementName = 'element_name_' . mt_rand();
-        $element = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+        $element = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
             ->getMock();
         $element->method('getName')->will($this->returnValue($elementName));
 
@@ -32,7 +32,7 @@ class CombineTest extends \PHPUnit_Framework_TestCase
     public function testGetName()
     {
         $elementName = 'element_name_' . mt_rand();
-        $element = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+        $element = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
             ->getMock();
         $element->method('getName')->will($this->returnValue($elementName));
 
@@ -56,7 +56,7 @@ class CombineTest extends \PHPUnit_Framework_TestCase
     public function testGetLabel()
     {
         $elementName = 'element_name_' . mt_rand();
-        $element = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+        $element = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
             ->getMock();
         $element->method('getName')->will($this->returnValue($elementName));
 
@@ -80,7 +80,7 @@ class CombineTest extends \PHPUnit_Framework_TestCase
     public function testIsMultiple()
     {
         $elementName = 'element_name_' . mt_rand();
-        $element = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+        $element = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
             ->getMock();
         $element->method('getName')->will($this->returnValue($elementName));
 
@@ -104,7 +104,7 @@ class CombineTest extends \PHPUnit_Framework_TestCase
     public function testJsonSerialize()
     {
         $elementName = 'element_name_' . mt_rand();
-        $element = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+        $element = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
             ->getMock();
         $element->method('getName')->will($this->returnValue($elementName));
 
@@ -132,7 +132,7 @@ class CombineTest extends \PHPUnit_Framework_TestCase
     public function testEmptyNameException()
     {
         $elementName = 'element_name_' . mt_rand();
-        $element = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+        $element = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
             ->getMock();
         $element->method('getName')->will($this->returnValue($elementName));
 
@@ -151,7 +151,7 @@ class CombineTest extends \PHPUnit_Framework_TestCase
     public function testEmptyLabelException()
     {
         $elementName = 'element_name_' . mt_rand();
-        $element = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+        $element = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
             ->getMock();
         $element->method('getName')->will($this->returnValue($elementName));
 
@@ -196,11 +196,11 @@ class CombineTest extends \PHPUnit_Framework_TestCase
     {
         $elementName = 'element_name_' . mt_rand();
 
-        $element = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+        $element = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
             ->getMock();
         $element->method('getName')->will($this->returnValue($elementName));
 
-        $element2 = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+        $element2 = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
             ->getMock();
         $element2->method('getName')->will($this->returnValue($elementName));
 

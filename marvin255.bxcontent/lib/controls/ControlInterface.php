@@ -1,6 +1,6 @@
 <?php
 
-namespace marvin255\bxcontent;
+namespace marvin255\bxcontent\controls;
 
 use JsonSerializable;
 

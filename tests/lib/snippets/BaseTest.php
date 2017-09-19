@@ -4,32 +4,12 @@ namespace marvin255\bxcontent\tests\lib\snippets;
 
 class BaseTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetType()
-    {
-        $arConfig = [
-            'type' => 'type_' . mt_rand(),
-            'label' => 'label_' . mt_rand(),
-            'controls' => [
-                $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
-                    ->getMock(),
-            ],
-        ];
-
-        $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
-
-        $this->assertSame(
-            $arConfig['type'],
-            $snippet->getType()
-        );
-    }
-
     public function testGetLabel()
     {
         $arConfig = [
-            'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
             'controls' => [
-                $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+                $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
                     ->getMock(),
             ],
         ];
@@ -45,12 +25,11 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     public function testGetControls()
     {
         $controlKey = 'controls_key_' . mt_rand();
-        $control = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+        $control = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
             ->getMock();
         $control->method('getName')->will($this->returnValue($controlKey));
 
         $arConfig = [
-            'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
             'controls' => [$control],
         ];
@@ -63,26 +42,11 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testEmptyTypeException()
-    {
-        $arConfig = [
-            'label' => 'label_' . mt_rand(),
-            'controls' => [
-                $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
-                    ->getMock(),
-            ],
-        ];
-
-        $this->setExpectedException('\marvin255\bxcontent\Exception', 'type');
-        $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
-    }
-
     public function testEmptyLabelException()
     {
         $arConfig = [
-            'type' => 'type_' . mt_rand(),
             'controls' => [
-                $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+                $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
                     ->getMock(),
             ],
         ];
@@ -94,7 +58,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     public function testEmptyControlsException()
     {
         $arConfig = [
-            'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
         ];
 
@@ -105,7 +68,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     public function testNonArrayControlsException()
     {
         $arConfig = [
-            'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
             'controls' => 123,
         ];
@@ -117,7 +79,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     public function testWrongControlsInstanceException()
     {
         $arConfig = [
-            'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
             'controls' => ['test_key' => 123],
         ];
@@ -129,12 +90,11 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     public function testNameDoublingControlsException()
     {
         $controlKey = 'controls_key_' . mt_rand();
-        $control = $this->getMockBuilder('\marvin255\bxcontent\ControlInterface')
+        $control = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
             ->getMock();
         $control->method('getName')->will($this->returnValue($controlKey));
 
         $arConfig = [
-            'type' => 'type_' . mt_rand(),
             'label' => 'label_' . mt_rand(),
             'controls' => [
                 $control,

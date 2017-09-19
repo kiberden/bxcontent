@@ -5,7 +5,6 @@ use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
 use Bitrix\Main\IO\Directory;
 use Bitrix\Main\EventManager;
-use InvalidArgumentException;
 
 Loc::loadMessages(__FILE__);
 

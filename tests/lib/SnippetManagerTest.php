@@ -6,97 +6,79 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testSet()
     {
-        $type = 'type_' . mt_rand();
-        $type2 = 'type_2_' . mt_rand();
-        $snippet = $this->getMockBuilder('\marvin255\bxcontent\SnippetInterface')
+        $name = 'type_' . mt_rand();
+        $name1 = 'type_2_' . mt_rand();
+        $snippet = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')
             ->getMock();
-        $snippet->method('getType')->will($this->returnValue($type));
 
         $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
 
         $this->assertSame(
             $manager,
-            $manager->set($snippet)
+            $manager->set($name, $snippet)
         );
         $this->assertSame(
             $snippet,
-            $manager->get($type)
+            $manager->get($name)
         );
         $this->assertSame(
             null,
-            $manager->get($type2)
+            $manager->get($name1)
         );
-    }
-
-    public function testSetDoublingException()
-    {
-        $type = 'type_' . mt_rand();
-        $snippet = $this->getMockBuilder('\marvin255\bxcontent\SnippetInterface')
-            ->getMock();
-        $snippet->method('getType')->will($this->returnValue($type));
-
-        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
-
-        $this->setExpectedException('\marvin255\bxcontent\Exception', $type);
-        $manager->set($snippet)->set($snippet);
     }
 
     public function testRemove()
     {
-        $type = 'type_' . mt_rand();
-        $snippet = $this->getMockBuilder('\marvin255\bxcontent\SnippetInterface')
+        $name = 'type_' . mt_rand();
+        $snippet = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')
             ->getMock();
-        $snippet->method('getType')->will($this->returnValue($type));
 
         $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
 
-        $manager->set($snippet);
+        $manager->set($name, $snippet);
         $this->assertSame(
             $manager,
-            $manager->remove($type)
+            $manager->remove($name)
         );
         $this->assertSame(
             null,
-            $manager->get($type)
+            $manager->get($name)
         );
     }
 
     public function testRemoveEmptySnippetException()
     {
-        $type = 'type_' . mt_rand();
-        $snippet = $this->getMockBuilder('\marvin255\bxcontent\SnippetInterface')
+        $name = 'type_' . mt_rand();
+        $snippet = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')
             ->getMock();
-        $snippet->method('getType')->will($this->returnValue($type));
 
         $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
 
-        $this->setExpectedException('\marvin255\bxcontent\Exception', $type);
-        $manager->remove($type);
+        $this->setExpectedException('\marvin255\bxcontent\Exception', $name);
+        $manager->remove($name);
     }
 
     public function testJsonSerialize()
     {
-        $type = 'type_' . mt_rand();
+        $name = 'type_' . mt_rand();
         $controls = ['control_' . mt_rand()];
         $label = 'label_' . mt_rand();
 
         $etalon = [
-            $type => [
+            $name => [
                 'label' => $label,
-                'type' => $type,
                 'controls' => $controls,
             ],
         ];
-        ksort($etalon[$type]);
+        ksort($etalon[$name]);
 
-        $snippet = $this->getMockBuilder('\marvin255\bxcontent\SnippetInterface')->getMock();
-        $snippet->method('getType')->will($this->returnValue($type));
+        $snippet = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')->getMock();
         $snippet->method('getControls')->will($this->returnValue($controls));
         $snippet->method('getLabel')->will($this->returnValue($label));
 
         $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
 
-        $return = $manager->set($snippet)->jsonSerialize();
+        $return = $manager->set($name, $snippet)->jsonSerialize();
         foreach ($return as &$item) {
             ksort($item);
         }
@@ -146,15 +128,14 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
     public function testRegisterAssets()
     {
         $parameterName = 'parameter_' . mt_rand();
-        $type = 'type_' . mt_rand();
+        $name = 'type_' . mt_rand();
         $controls = ['control_' . mt_rand()];
         $label = 'label_' . mt_rand();
         $js1 = 'js_' . mt_rand();
         $js2 = 'js_2_' . mt_rand();
 
         $etalon = [
-            $type => [
-                'type' => $type,
+            $name => [
                 'label' => $label,
                 'controls' => $controls,
             ],
@@ -164,8 +145,7 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
         $managerData .= json_encode($etalon);
         $managerData .= ';</script>';
 
-        $snippet = $this->getMockBuilder('\marvin255\bxcontent\SnippetInterface')->getMock();
-        $snippet->method('getType')->will($this->returnValue($type));
+        $snippet = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')->getMock();
         $snippet->method('getControls')->will($this->returnValue($controls));
         $snippet->method('getLabel')->will($this->returnValue($label));
 
@@ -186,6 +166,6 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
 
         $manager->addJs($js1)->addJs($js2);
 
-        $manager->set($snippet)->registerAssets($asset, $parameterName);
+        $manager->set($name, $snippet)->registerAssets($asset, $parameterName);
     }
 }

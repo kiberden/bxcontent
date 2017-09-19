@@ -2,8 +2,7 @@
 
 namespace marvin255\bxcontent\snippets;
 
-use marvin255\bxcontent\SnippetInterface;
-use marvin255\bxcontent\ControlInterface;
+use marvin255\bxcontent\controls\ControlInterface;
 use marvin255\bxcontent\SettingsTrait;
 use marvin255\bxcontent\Exception;
 
@@ -14,14 +13,6 @@ use marvin255\bxcontent\Exception;
 class Base implements SnippetInterface
 {
     use SettingsTrait;
-
-    /**
-     * @inheritdoc
-     */
-    public function getType()
-    {
-        return $this->getSetting('type');
-    }
 
     /**
      * @inheritdoc
@@ -42,20 +33,8 @@ class Base implements SnippetInterface
     /**
      * @inheritdoc
      */
-    public function getRenderer()
-    {
-        return null;
-    }
-
-    /**
-     * @inheritdoc
-     */
     protected function check(array $settings)
     {
-        if (empty($settings['type']) || trim($settings['type']) === '') {
-            throw new Exception('Snippet\'s type can\'t be empty');
-        }
-
         if (empty($settings['label']) || trim($settings['label']) === '') {
             throw new Exception('Snippet\'s label can\'t be empty');
         }

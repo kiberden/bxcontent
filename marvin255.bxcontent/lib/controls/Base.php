@@ -2,7 +2,6 @@
 
 namespace marvin255\bxcontent\controls;
 
-use marvin255\bxcontent\ControlInterface;
 use marvin255\bxcontent\SettingsTrait;
 use marvin255\bxcontent\Exception;
 

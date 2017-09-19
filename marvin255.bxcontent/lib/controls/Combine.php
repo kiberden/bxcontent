@@ -3,7 +3,6 @@
 namespace marvin255\bxcontent\controls;
 
 use marvin255\bxcontent\Exception;
-use marvin255\bxcontent\ControlInterface;
 
 /**
  * Поле для ввода, которое объединяет в себе несколько других полей.

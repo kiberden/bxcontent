@@ -2,6 +2,7 @@
 
 namespace marvin255\bxcontent;
 
+use marvin255\bxcontent\snippets\SnippetInterface;
 use Bitrix\Main\Page\Asset;
 use JsonSerializable;
 
@@ -16,7 +17,7 @@ class SnippetManager implements JsonSerializable
     /**
      * Объект для реализации singleton.
      *
-     * @var \marvin255\bxfoundation\application\Application
+     * @var \marvin255\bxcontent\SnippetManager
      */
     private static $instance = null;
     /**
@@ -38,7 +39,7 @@ class SnippetManager implements JsonSerializable
      *
      * @param bool $refresh Флаг, который указывает, что инстанс нужно пересоздать заново
      *
-     * @return \marvin255\bxfoundation\application\Application
+     * @return \marvin255\bxcontent\SnippetManager
      */
     public static function getInstance($refresh = false)
     {
@@ -55,39 +56,42 @@ class SnippetManager implements JsonSerializable
     }
 
     /**
-     * Добавляет новый тип сниппета.
+     * Добавляет новый сниппет.
      *
-     * @param \marvin255\bxcontent\SnippetInterface $snippet Объект сниппета
+     * @param string                                         $name    Название сниппета
+     * @param \marvin255\bxcontent\snippets\SnippetInterface $snippet Объект сниппета
      *
      * @return \marvin255\bxcontent\SnippetManager
      *
      * @throws \marvin255\bxcontent\Exception
      */
-    public function set(SnippetInterface $snippet)
+    public function set($name, SnippetInterface $snippet)
     {
-        if ($this->get($snippet->getType()) !== null) {
-            throw new Exception('Snippet with type ' . $snippet->getType() . ' already exists');
+        $name = $this->normalizeSnippetName($name);
+        if (!$name) {
+            throw new Exception('Empty snippet name');
         }
-        $this->snippets[$snippet->getType()] = $snippet;
+        $this->snippets[$name] = $snippet;
 
         return $this;
     }
 
     /**
-     * Удаляет сниппет с сответствующим типом.
+     * Удаляет сниппет.
      *
-     * @param string $type Тип сниппета
+     * @param string $name Название сниппета
      *
      * @return \marvin255\bxcontent\SnippetManager
      *
      * @throws \marvin255\bxcontent\Exception
      */
-    public function remove($type)
+    public function remove($name)
     {
-        if ($this->get($type) === null) {
-            throw new Exception('Can\'t find snippet with type ' . $type . ' to unset');
+        if ($this->get($name) === null) {
+            throw new Exception('Can\'t find snippet with type ' . $name . ' to unset');
         }
-        unset($this->snippets[$type]);
+        $name = $this->normalizeSnippetName($name);
+        unset($this->snippets[$name]);
 
         return $this;
     }
@@ -95,13 +99,27 @@ class SnippetManager implements JsonSerializable
     /**
      * Возвращает сниппет по его имени.
      *
-     * @param string $type
+     * @param string $name Название сниппета
      *
-     * @return \marvin255\bxcontent\SnippetInterface|null
+     * @return \marvin255\bxcontent\snippets\SnippetInterface|null
      */
-    public function get($type)
+    public function get($name)
     {
-        return isset($this->snippets[$type]) ? $this->snippets[$type] : null;
+        $name = $this->normalizeSnippetName($name);
+
+        return isset($this->snippets[$name]) ? $this->snippets[$name] : null;
+    }
+
+    /**
+     * Приводит имена сниппетов в единообразный вид.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function normalizeSnippetName($name)
+    {
+        return strtolower(trim($name));
     }
 
     /**
@@ -112,9 +130,8 @@ class SnippetManager implements JsonSerializable
     public function jsonSerialize()
     {
         $return = [];
-        foreach ($this->snippets as $type => $snippet) {
-            $return[$type] = [
-                'type' => $snippet->getType(),
+        foreach ($this->snippets as $name => $snippet) {
+            $return[$name] = [
                 'label' => $snippet->getLabel(),
                 'controls' => $snippet->getControls(),
             ];
@@ -151,7 +168,7 @@ class SnippetManager implements JsonSerializable
     }
 
     /**
-     * Добавляет скрипт к списку для регистрации
+     * Добавляет скрипт к списку для регистрации.
      *
      * @param string $script
      *

@@ -7,9 +7,6 @@ use Bitrix\Main\Event;
 require_once __DIR__ . '/lib/Autoloader.php';
 
 $snippetManager = SnippetManager::getInstance(true);
-
-$snippetManager->set(new \marvin255\bxcontent\snippets\Slider);
-$snippetManager->set(new \marvin255\bxcontent\snippets\Blockquote);
 $snippetManager->addJs('/bitrix/js/marvin255.bxcontent/plugin.js');
 
 $event = new Event(

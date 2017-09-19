@@ -41,7 +41,7 @@ trait SettingsTrait
      *
      * @param array $settings Настройки объекта, вида "название поля => значение"
      *
-     * @return \marvin255\bxcontent\ControlInterface
+     * @return \marvin255\bxcontent\controls\ControlInterface
      */
     protected function config(array $settings)
     {

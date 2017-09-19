@@ -1,6 +1,6 @@
 <?php
 
-namespace marvin255\bxcontent;
+namespace marvin255\bxcontent\snippets;
 
 /**
  * Интерфейс для построения законченой части контента - сниппета. Например,
@@ -8,13 +8,6 @@ namespace marvin255\bxcontent;
  */
 interface SnippetInterface
 {
-    /**
-     * Возвращет тип сниппета.
-     *
-     * @return string
-     */
-    public function getType();
-
     /**
      * Возвращет человекочитаемую метку сниппета.
      *
@@ -28,11 +21,4 @@ interface SnippetInterface
      * @return array
      */
     public function getControls();
-
-    /**
-     * Возвращет объект для отображения сниппета или строку с вызовом компонента для отображения.
-     *
-     * @return string
-     */
-    public function getRenderer();
 }
