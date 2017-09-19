@@ -49,18 +49,4 @@ trait SettingsTrait
 
         return $this;
     }
-
-    /**
-     * Проверяет текущие настройки объекта на валидность.
-     *
-     * @param array $settings Настройки объекта, вида "название поля => значение"
-     *
-     * @return array
-     *
-     * @throws \marvin255\bxcontent\Exception
-     */
-    protected function check(array $settings)
-    {
-        return $settings;
-    }
 }
