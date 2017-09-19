@@ -10,6 +10,7 @@ $snippetManager = SnippetManager::getInstance(true);
 
 $snippetManager->set(new \marvin255\bxcontent\snippets\Slider);
 $snippetManager->set(new \marvin255\bxcontent\snippets\Blockquote);
+$snippetManager->addJs('/bitrix/js/marvin255.bxcontent/plugin.js');
 
 $event = new Event(
     'marvin255.bxcontent',
