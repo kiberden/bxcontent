@@ -4,6 +4,7 @@ namespace marvin255\bxcontent;
 
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Page\Asset;
+use CJSCore;
 
 Loc::loadMessages(__FILE__);
 
@@ -38,6 +39,7 @@ class UserTypeContent
      */
     public function GetEditFormHTML($field, $control)
     {
+        CJSCore::Init(['jquery']);
         SnippetManager::getInstance()->registerAssets(Asset::getInstance());
 
         $return = '<textarea style="display: none;" class="marvin255bxcontent-init" name="' . htmlentities($control['NAME']) . '">';
