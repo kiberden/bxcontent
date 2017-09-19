@@ -27,6 +27,17 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testSetEmptySnippetNameException()
+    {
+        $snippet = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')
+            ->getMock();
+
+        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
+
+        $this->setExpectedException('\marvin255\bxcontent\Exception', 'name');
+        $manager->set('', $snippet);
+    }
+
     public function testRemove()
     {
         $name = 'type_' . mt_rand();
