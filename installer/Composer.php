@@ -18,6 +18,38 @@ use InvalidArgumentException;
 class Composer
 {
     /**
+     * Название вендора.
+     *
+     * @var string
+     */
+    protected static $vendor = 'marvin255';
+    /**
+     * Название модуля.
+     *
+     * @var string
+     */
+    protected static $module = 'bxcontent';
+
+    /**
+     * Возвращает массив вида "путь до папки бибилиотеки" => "путь для установки".
+     * Для копироания данных в битрикс.
+     *
+     * @return array
+     */
+    protected static function getCopyingFoldersPathes(Event $event)
+    {
+        $libFolder = self::getLibraryFolder($event);
+        $bitrixFolder = self::getBitrixFolder($event);
+        $modulesFolder = self::getModulesFolder($event);
+
+        return [
+            $libFolder => $modulesFolder . '/' . self::$vendor . '.' . self::$module,
+            $libFolder . '/install/js' => $bitrixFolder . '/js/' . self::$vendor . '.' . self::$module,
+            $libFolder . '/install/css' => $bitrixFolder . '/css/' . self::$vendor . '.' . self::$module,
+        ];
+    }
+
+    /**
      * Устанавливает модуль в структуру битрикса.
      *
      * **Внимание** перед установкой или обновлением удаляет страрую весрию.
@@ -26,27 +58,39 @@ class Composer
      */
     public static function injectModule(Event $event)
     {
-        $composer = $event->getComposer();
-
-        $bitrixModulesFolder = self::getModulesFolder($event);
-        if (!$bitrixModulesFolder) {
-            throw new InvalidArgumentException('Can\'t find modules\' folder');
-        }
-        $bitrixModulesFolder .= '/marvin255.bxcontent';
-
-        $libraryFolder = self::getLibraryFolder($event);
-        if (!$libraryFolder) {
-            throw new InvalidArgumentException('Can\'t find src folder');
-        }
-
+        $copyingFoldersPathes = self::getCopyingFoldersPathes($event);
         $fileSystem = new Filesystem();
-        if (is_dir($bitrixModulesFolder)) {
-            $fileSystem->removeDirectory($bitrixModulesFolder);
+
+        foreach ($copyingFoldersPathes as $from => $to) {
+            if ($to && is_dir($to)) {
+                $fileSystem->removeDirectory($to);
+            }
+            if (!$from || !is_dir($from)) {
+                continue;
+            }
+            self::copy($from, $to, $fileSystem);
+        }
+    }
+
+    /**
+     * Возвращает полный путь до папки битрикса.
+     *
+     * @param \Composer\Script\Event $event
+     *
+     * @return string
+     */
+    protected static function getBitrixFolder(Event $event)
+    {
+        $projectRootPath = rtrim(dirname(Factory::getComposerFile()), '/');
+
+        $extras = $event->getComposer()->getPackage()->getExtra();
+        if (!empty($extras['install-bitrix'])) {
+            $bitrixModulesFolder = $extras['install-bitrix'];
+        } else {
+            $bitrixModulesFolder = 'web/bitrix';
         }
 
-        if (!self::copy($libraryFolder, $bitrixModulesFolder, $fileSystem)) {
-            throw new InvalidArgumentException('Can\'t project src folder');
-        }
+        return (string) realpath($projectRootPath . '/' . trim($bitrixModulesFolder, '/'));
     }
 
     /**
@@ -62,12 +106,12 @@ class Composer
 
         $extras = $event->getComposer()->getPackage()->getExtra();
         if (!empty($extras['install-bitrix-modules'])) {
-            $bitrixModulesFolder = $extras['install-bitrix-modules'];
+            $bitrixFolder = $extras['install-bitrix-modules'];
         } else {
-            $bitrixModulesFolder = 'web/local/modules';
+            $bitrixFolder = 'web/local/modules';
         }
 
-        return (string) realpath($projectRootPath . '/' . trim($bitrixModulesFolder, '/'));
+        return (string) realpath($projectRootPath . '/' . trim($bitrixFolder, '/'));
     }
 
     /**
@@ -86,8 +130,8 @@ class Composer
         $localRepository = $repositoryManager->getLocalRepository();
         $packages = $localRepository->getPackages();
         foreach ($packages as $package) {
-            if ($package->getName() === 'marvin255/bxcontent') {
-                $srcFolder = realpath(rtrim($installationManager->getInstallPath($package), '/') . '/marvin255.bxcontent');
+            if ($package->getName() ===  self::$vendor . '/' . self::$module) {
+                $srcFolder = realpath(rtrim($installationManager->getInstallPath($package), '/') . '/' . self::$vendor . '.' . self::$module);
                 break;
             }
         }
