@@ -2,6 +2,7 @@
 
 namespace marvin255\bxcontent\fields;
 
+use marvin255\bxcontent\SnippetManager;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Page\Asset;
 use CJSCore;
