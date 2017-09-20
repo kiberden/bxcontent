@@ -1,6 +1,6 @@
 <?php
 
-namespace marvin255\bxcontent;
+namespace marvin255\bxcontent\fields;
 
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Page\Asset;
