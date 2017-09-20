@@ -65,7 +65,7 @@ class Composer
             if ($to && is_dir($to)) {
                 $fileSystem->removeDirectory($to);
             }
-            if (!$from || !is_dir($from)) {
+            if (!$to || !$from || !is_dir($from)) {
                 continue;
             }
             self::copy($from, $to, $fileSystem);
