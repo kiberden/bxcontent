@@ -6,7 +6,7 @@
     beStrictAboutTestsThatDoNotTestAnything="true">
 
     <testsuites>
-        <testsuite name="Serviform Test Suite">
+        <testsuite name="BxContent Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
@@ -16,8 +16,7 @@
             <directory>marvin255.bxcontent/lib</directory>
             <exclude>
                 <file>marvin255.bxcontent/lib/Autoloader.php</file>
-                <file>marvin255.bxcontent/lib/PropertyTypeContent.php</file>
-                <file>marvin255.bxcontent/lib/UserTypeContent.php</file>
+                <directory>marvin255.bxcontent/lib/fields</directory>
             </exclude>
         </whitelist>
     </filter>
