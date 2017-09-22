@@ -152,9 +152,9 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $managerData = "<script>window.{$parameterName} = ";
+        $managerData = "<script>$.fn.marvin255bxcontent('registerSnippets', ";
         $managerData .= json_encode($etalon);
-        $managerData .= ';</script>';
+        $managerData .= ');</script>';
 
         $snippet = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')->getMock();
         $snippet->method('getControls')->will($this->returnValue($controls));

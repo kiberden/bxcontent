@@ -187,21 +187,20 @@ class SnippetManager implements JsonSerializable
     /**
      * Регистриует все ассеты для отображения полей в админке.
      *
-     * @param \Bitrix\Main\Page\Asset $asset         Менеджер ассетов битрикса
-     * @param string                  $parameterName Название параметра, в котором будут переданы все настройки сниппетов
+     * @param \Bitrix\Main\Page\Asset $asset Менеджер ассетов битрикса
      *
      * @return \marvin255\bxcontent\SnippetManager
      */
-    public function registerAssets(Asset $asset, $parameterName = 'marvin255bxcontent')
+    public function registerAssets(Asset $asset)
     {
         $js = $this->getJs();
         foreach ($js as $script) {
             $asset->addJs($script, true);
         }
 
-        $managerData = "<script>window.{$parameterName} = ";
+        $managerData = "<script>$.fn.marvin255bxcontent('registerSnippets', ";
         $managerData .= json_encode($this);
-        $managerData .= ';</script>';
+        $managerData .= ');</script>';
         $asset->addString($managerData, true);
     }
 }

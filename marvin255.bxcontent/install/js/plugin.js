@@ -245,6 +245,13 @@
         'registerSnippet': function (type, settings) {
             return snippetsFactory.register(type, settings);
         },
+        //добавляет новые типы сниппетов из объекта
+        'registerSnippets': function (snippets) {
+            for (var k in snippets) {
+                if (!snippets.hasOwnProperty(k)) continue;
+                snippetsFactory.register(k, snippets[k]);
+            }
+        },
         //инициирует плагин на выбранных элементах
         'init': function () {
             return this.filter('textarea').each(function (i) {
@@ -297,13 +304,6 @@
      * Подготовительные операции после загрузки всего dom.
      */
     $(document).on('ready', function () {
-        //регистрируем типы сниппетов по умолчанию, если заданы
-        if (window.marvin255bxcontent) {
-            for (var k in window.marvin255bxcontent) {
-                if (!window.marvin255bxcontent.hasOwnProperty(k)) continue;
-                $.fn.marvin255bxcontent('registerSnippet', k, window.marvin255bxcontent[k]);
-            }
-        }
         //инициируем поля со сниппетами, у которых указан класс по умолчанию
         $('.marvin255bxcontent-init').marvin255bxcontent();
     });

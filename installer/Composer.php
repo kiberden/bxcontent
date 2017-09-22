@@ -7,7 +7,6 @@ use Composer\Factory;
 use Composer\Util\Filesystem;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use InvalidArgumentException;
 
 /**
  * Класс-установщик, который необходим для того, чтобы скопировать файлы модуля
@@ -154,7 +153,7 @@ class Composer
         $localRepository = $repositoryManager->getLocalRepository();
         $packages = $localRepository->getPackages();
         foreach ($packages as $package) {
-            if ($package->getName() ===  self::$vendor . '/' . self::$module) {
+            if ($package->getName() === self::$vendor . '/' . self::$module) {
                 $srcFolder = realpath(rtrim($installationManager->getInstallPath($package), '/') . '/' . self::$vendor . '.' . self::$module);
                 break;
             }
