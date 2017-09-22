@@ -32,18 +32,33 @@ class Composer
 
     /**
      * Возвращает массив вида "путь до папки бибилиотеки" => "путь для установки".
-     * Для копироания данных в битрикс.
+     * Для копироания данных в битрикс. Эти данные будут скопированы и при установке,
+     * и при обновлении.
      *
      * @return array
      */
-    protected static function getCopyingFoldersPathes(Event $event)
+    protected static function getInstallingFoldersPathes(Event $event)
     {
         $libFolder = self::getLibraryFolder($event);
-        $bitrixFolder = self::getBitrixFolder($event);
         $modulesFolder = self::getModulesFolder($event);
 
         return [
             $libFolder => $modulesFolder . '/' . self::$vendor . '.' . self::$module,
+        ];
+    }
+
+    /**
+     * Возвращает массив вида "путь до папки бибилиотеки" => "путь для установки".
+     * Для копироания данных в битрикс. Эти данные будут скопированы только при обновлении.
+     *
+     * @return array
+     */
+    protected static function getUpdatingFoldersPathes(Event $event)
+    {
+        $libFolder = self::getLibraryFolder($event);
+        $bitrixFolder = self::getBitrixFolder($event);
+
+        return [
             $libFolder . '/install/js' => $bitrixFolder . '/js/' . self::$vendor . '.' . self::$module,
             $libFolder . '/install/css' => $bitrixFolder . '/css/' . self::$vendor . '.' . self::$module,
         ];
@@ -58,16 +73,25 @@ class Composer
      */
     public static function injectModule(Event $event)
     {
-        $copyingFoldersPathes = self::getCopyingFoldersPathes($event);
+        $installingFoldersPathes = self::getInstallingFoldersPathes($event);
+        $updatingFoldersPathes = self::getUpdatingFoldersPathes($event);
         $fileSystem = new Filesystem();
 
-        foreach ($copyingFoldersPathes as $from => $to) {
+        foreach ($installingFoldersPathes as $from => $to) {
             if ($to && is_dir($to)) {
                 $fileSystem->removeDirectory($to);
             }
             if (!$to || !$from || !is_dir($from)) {
                 continue;
             }
+            self::copy($from, $to, $fileSystem);
+        }
+
+        foreach ($updatingFoldersPathes as $from => $to) {
+            if (!is_dir($to) || !is_dir($from)) {
+                continue;
+            }
+            $fileSystem->removeDirectory($to);
             self::copy($from, $to, $fileSystem);
         }
     }
