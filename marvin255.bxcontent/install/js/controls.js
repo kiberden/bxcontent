@@ -189,6 +189,25 @@
     };
     CombineClass.prototype = Object.create(BaseControlClass.prototype);
     CombineClass.prototype.constructor = CombineClass;
+    CombineClass.prototype._renderInternal = function ($block, name, value) {
+        if (!this.settings.elements) return;
+        var controlsFactory = this.controlsFactory;
+        var controls = [];
+        $.each(this.settings.elements, function (key, element) {
+            if (!element.type) return;
+            var $cobineBlock = $('<div class="marvin255bxcontent-snippets-snippet-combine-item" />').appendTo($block);
+            var $cobineLabel = $('<div class="marvin255bxcontent-snippets-snippet-combine-item-label" />').appendTo($cobineBlock);
+            var $cobineInput = $('<div class="marvin255bxcontent-snippets-snippet-combine-item-input" />').appendTo($cobineBlock);
+            var element = $.extend({}, element);
+            element.name = name + '[' + element.name + ']';
+            var control = controlsFactory.createInstance(element.type, element);
+            if (value && value[element.name]) {
+                control.setValue(element.name);
+            }
+            $cobineLabel.text(control.getLabel());
+            control.render($cobineInput);
+        });
+    };
 
     //регистрируем поле
     $.fn.marvin255bxcontent('registerControl', 'combine', CombineClass);

@@ -70,3 +70,15 @@
     top: 0.5em;
     right: 0;
 }
+
+.marvin255bxcontent-snippets-snippet-combine-item-label {
+    margin: 0 0 0.5em;
+}
+
+.marvin255bxcontent-snippets-snippet-combine-item {
+    margin: 0 0 1em;
+}
+
+.marvin255bxcontent-snippets-snippet-combine-item:last-child {
+    margin-bottom: 0;
+}
