@@ -2,20 +2,81 @@
 
 
     /**
+     * Объект, который хранит в себе коллекцию других объектов, сохраненных
+     * под определенными ключами.
+     */
+    var CollectionClass = function () {
+        this._uniqueCounter = 0;
+        this._collection = {};
+    };
+
+    CollectionClass.prototype.set = function (key, item) {
+        this._collection[key] = item;
+        return this;
+    };
+
+    CollectionClass.prototype.add = function (item) {
+        var key = 'item_' + this._uniqueCounter++;
+        this.set(key, item);
+    };
+
+    CollectionClass.prototype.get = function (key) {
+        return this._collection[key] || null;
+    };
+
+    CollectionClass.prototype.remove = function (key) {
+        delete this._collection[key];
+        return this;
+    };
+
+    CollectionClass.prototype.setCollection = function (collection) {
+        this._collection = {};
+        for (var k in collection) {
+            if (!collection.hasOwnProperty(k)) continue;
+            this.set(k, collection[k]);
+        }
+    };
+
+    CollectionClass.prototype.getCollection = function () {
+        return this._collection;
+    };
+
+    CollectionClass.prototype.map = function (callback) {
+        for (var k in this._collection) {
+            if (!this._collection.hasOwnProperty(k)) continue;
+            var res = callback.call(this, this._collection[k], k);
+            if (res === false) break;
+        }
+        return this;
+    };
+
+    CollectionClass.prototype.search = function (item) {
+        var key = null;
+        this.map(function (collectionItem, collectionKey) {
+            if (item === collectionItem) {
+                key = collectionKey;
+                return false;
+            }
+        });
+        return key;
+    };
+
+
+    /**
      * Класс для сниппета.
      */
     var SnippetClass = function (type, settings, controlsFactory) {
         var self = this;
-        var controls = [];
+        var controls = new CollectionClass;
 
         //создаем контролы для текущего сниппета
         if (settings.controls) {
             for (var k in settings.controls) {
-                if (!settings.controls.hasOwnProperty(k)) continue;
-                var control = controlsFactory.createInstance(settings.controls[k]);
+                if (!settings.controls.hasOwnProperty(k) || !settings.controls[k].type) continue;
+                var control = controlsFactory.createInstance(settings.controls[k].type, settings.controls[k]);
                 if (control) {
-                    controls.setParent(self);
-                    controls.push(control);
+                    control.setParent(self);
+                    controls.add(control);
                 }
             }
         }
@@ -33,7 +94,7 @@
         };
 
         self.getControls = function () {
-            return self.settings.controls || [];
+            return self.settings.controls;
         };
 
         self.getName = function () {
@@ -63,48 +124,18 @@
      * Коллекция из нескольких сниппетов.
      */
     var SnippetCollectionClass = function (name) {
-        var self = this;
-
-        self.snippets = [];
-
-        self.addSnippet = function (snippet) {
-            snippet.setParent(self);
-            self.snippets.push(snippet);
-        };
-
-        self.setSnippets = function (newSnippets) {
-            self.snippets = newSnippets;
-        };
-
-        self.getSnippets = function () {
-            return self.snippets;
-        };
-
-        self.hasSnippet = function (snippet) {
-            var hasSnippet = false;
-            for (var k in self.snippets) {
-                if (!self.snippets.hasOwnProperty(k)) continue;
-                if (snippet === self.snippets[k]) {
-                    hasSnippet = true;
-                    break;
-                }
-            }
-            return hasSnippet;
-        };
-
-        self.removeSnippet = function (snippet) {
-            for (var k in self.snippets) {
-                if (!self.snippets.hasOwnProperty(k)) continue;
-                if (snippet === self.snippets[k]) {
-                    delete self.snippets[k];
-                    break;
-                }
-            }
-        };
-
-        self.getName = function () {
-            return name;
-        };
+        CollectionClass.apply(this, []);
+        this.name = name;
+    };
+    SnippetCollectionClass.prototype = Object.create(CollectionClass.prototype);
+    SnippetCollectionClass.prototype.constructor = SnippetCollectionClass;
+    SnippetCollectionClass.prototype.getName = function () {
+        return this.name;
+    };
+    SnippetCollectionClass.prototype.set = function (key, item) {
+        item.setParent(this);
+        CollectionClass.prototype.set.apply(this, arguments);
+        return this;
     };
 
 
@@ -112,18 +143,14 @@
      * Фабричный класс для создания новых объектов контролов.
      */
     var ControlFactoryClass = function () {
-        var self = this;
-
-        self.list = {};
-
-        self.register = function (type, construct) {
-            self.list[type] = construct;
-        };
-
-        self.createInstance = function (settings) {
-            if (!settings.type || !self.list[settings.type]) return;
-            return new self.list[settings.type](settings, self);
-        };
+        CollectionClass.apply(this, []);
+    };
+    ControlFactoryClass.prototype = Object.create(CollectionClass.prototype);
+    ControlFactoryClass.prototype.constructor = ControlFactoryClass;
+    ControlFactoryClass.prototype.createInstance = function (type, settings) {
+        var item = this.get(type);
+        if (!item) return null;
+        return new item(settings, this);
     };
 
 
@@ -131,23 +158,15 @@
      * Фабричный класс для создания новых объектов сниппетов.
      */
     var SnippetFactoryClass = function (controlsFactory) {
-        var self = this;
-
-        self.list = {};
-        self.controlsFactory = controlsFactory;
-
-        self.register = function (type, settings) {
-            self.list[type] = settings;
-        };
-
-        self.createInstance = function (type) {
-            if (!self.list[type]) return;
-            return new SnippetClass(type, self.list[type], self.controlsFactory);
-        };
-
-        self.getList = function () {
-            return self.list;
-        };
+        CollectionClass.apply(this, []);
+        this.controlsFactory = controlsFactory;
+    };
+    SnippetFactoryClass.prototype = Object.create(CollectionClass.prototype);
+    SnippetFactoryClass.prototype.constructor = SnippetFactoryClass;
+    SnippetFactoryClass.prototype.createInstance = function (type) {
+        var item = this.get(type);
+        if (!item) return null;
+        return new SnippetClass(type, item, this.controlsFactory);
     };
 
 
@@ -159,19 +178,8 @@
 
         self.domBlock = $($domBlock);
         self.collection = collection;
+        self.renderedCollection = new CollectionClass;
         self.snippetsFactory = snippetsFactory;
-
-        self.getDomBlock = function () {
-            return self.domBlock;
-        };
-
-        self.getCollection = function () {
-            return self.collection;
-        };
-
-        self.getSnippetsFactory = function () {
-            return self.snippetsFactory;
-        };
 
         self.render = function () {
             self.renderSnippets();
@@ -183,8 +191,56 @@
             if (!$snippetsBlock.length) {
                 $snippetsBlock = $('<div class="marvin255bxcontent-snippets-block" />').appendTo(self.domBlock);
             }
-            var snippets = self.getCollection().getSnippets();
-            console.log('rendering snippets');
+            //отображает сниппеты, которые есть в коллекции, но которых нет на форме
+            self.collection.map(function (item, key) {
+                if (!self.renderedCollection.get(key)) {
+                    var $snippetBlock = $('<div class="marvin255bxcontent-snippets-snippet" />').appendTo($snippetsBlock);
+                    self.renderedCollection.set(key, $snippetBlock);
+                    self.renderSnippet($snippetBlock, item, key);
+                }
+            });
+            //убирает сниппеты, которые отображены на форме, но которых нет в коллекции
+            self.renderedCollection.map(function (item, key) {
+                if (!self.collection.get(key)) {
+                    item.stop(true, true).fadeOut(400, function () {
+                        item.empty().remove();
+                        self.renderedCollection.remove(key);
+                    });
+                }
+            });
+        };
+
+        self.renderSnippet = function ($block, snippet, key) {
+            //заголовок сниппета
+            var $header = $block.find('.marvin255bxcontent-snippets-snippet-header');
+            if (!$header.length) {
+                $header = $('<div class="marvin255bxcontent-snippets-snippet-header" />').text(snippet.getLabel).appendTo($block);
+            }
+
+            //кнопка удаления сниппета
+            var $remove = $block.find('.marvin255bxcontent-snippets-snippet-remove');
+            if (!$remove.length) {
+                $remove = $('<button class="marvin255bxcontent-snippets-snippet-remove" />').text('Удалить').appendTo($block);
+            }
+            $remove.off('click').on('click', function () {
+                self.collection.remove(key);
+                self.renderSnippets();
+                return false;
+            });
+
+            //контролы
+            var $controls = $block.find('.marvin255bxcontent-snippets-snippet-controls');
+            if (!$controls.length) {
+                $controls = $('<div class="marvin255bxcontent-snippets-snippet-controls" />').appendTo($block);
+            } else {
+                $controls.empty();
+            }
+            snippet.getControls().map(function (item, key) {
+                var $controlArea = $('<div class="marvin255bxcontent-snippets-snippet-controls-control" />');
+                var $label = $('<div class="marvin255bxcontent-snippets-snippet-controls-control-label" />').text(item.getLabel()).appendTo($controlArea);
+                var $control = $('<div class="marvin255bxcontent-snippets-snippet-controls-control-container" />').appendTo($controlArea);
+                item.render($control);
+            });
         };
 
         self.renderSelector = function () {
@@ -194,7 +250,7 @@
             }
 
             var typesOptions = '<option value="">Выберите тип блока</option>';
-            $.each(self.getSnippetsFactory().getList(), function (key, item) {
+            self.snippetsFactory.map(function (item, key) {
                 typesOptions += '<option value="' + key + '">' + item.label + '</option>';
             });
             var $select = $selectorBlock.find('select');
@@ -210,9 +266,9 @@
             }
             $button.off('click').on('click', function () {
                 var type = $select.val();
-                var snippet = self.getSnippetsFactory().createInstance(type);
+                var snippet = type ? self.snippetsFactory.createInstance(type) : null;
                 if (snippet) {
-                    self.getCollection().addSnippet(snippet);
+                    self.collection.add(snippet);
                     self.renderSnippets();
                 }
                 $select.val('');
@@ -222,6 +278,10 @@
 
         self.destroy = function () {
             self.domBlock.empty().remove();
+            delete self.domBlock;
+            delete self.collection;
+            delete self.renderedCollection;
+            delete self.snippetsFactory;
         };
     };
 
@@ -239,18 +299,15 @@
     var methods = {
         //добавляет новый тип контрола в фабричный объект контролов
         'registerControl': function (type, construct) {
-            return controlsFactory.register(type, construct);
+            return controlsFactory.set(type, construct);
         },
         //добавляет новый тип сниппета в фабричный объект сниппетов
         'registerSnippet': function (type, settings) {
-            return snippetsFactory.register(type, settings);
+            return snippetsFactory.set(type, settings);
         },
         //добавляет новые типы сниппетов из объекта
         'registerSnippets': function (snippets) {
-            for (var k in snippets) {
-                if (!snippets.hasOwnProperty(k)) continue;
-                snippetsFactory.register(k, snippets[k]);
-            }
+            return snippetsFactory.setCollection(snippets);
         },
         //инициирует плагин на выбранных элементах
         'init': function () {
@@ -261,27 +318,6 @@
                 var view = new SnippetCollectionViewClass($snippetsBlock, collection, snippetsFactory);
                 view.render();
                 $textarea.data('marvin255bxcontent_viewer', view);
-            });
-        },
-        //перестраивает представление для инициированного плагина
-        'refresh': function () {
-            return this.filter('textarea').each(function (i) {
-                var $this = $(this);
-                var view = $this.data('marvin255bxcontent_viewer');
-                if (view) {
-                    view.render();
-                }
-            });
-        },
-        //удаляет плагин
-        'destroy': function () {
-            return this.filter('textarea').each(function (i) {
-                var $this = $(this);
-                var view = $this.data('marvin255bxcontent_viewer');
-                if (view) {
-                    view.destroy();
-                    $this.removeData('marvin255bxcontent_viewer');
-                }
             });
         },
     };
@@ -300,13 +336,8 @@
     };
 
 
-    /**
-     * Подготовительные операции после загрузки всего dom.
-     */
     $(document).on('ready', function () {
-        //инициируем поля со сниппетами, у которых указан класс по умолчанию
         $('.marvin255bxcontent-init').marvin255bxcontent();
     });
-
 
 })(jQuery, document, window);
