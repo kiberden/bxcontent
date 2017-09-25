@@ -84,6 +84,7 @@
         self.settings = settings;
         self.settings.type = type;
         self.settings.controls = controls;
+        self.name = '';
 
         self.getType = function () {
             return self.settings.type || '';
@@ -99,7 +100,19 @@
 
         self.getName = function () {
             var parent = self.getParent();
-            return parent.getName ? parent.getName() : '';
+            var name = '';
+            if (parent.getName) {
+                name = parent.getName();
+            }
+            if (self.name) {
+                name = name ? name + '[' + self.name + ']' : self.name;
+            }
+            return name;
+        };
+
+        self.setName = function (name) {
+            self.name = name;
+            return self;
         };
 
         self.setValue = function (value) {
@@ -134,6 +147,7 @@
     };
     SnippetCollectionClass.prototype.set = function (key, item) {
         item.setParent(this);
+        item.setName(key);
         CollectionClass.prototype.set.apply(this, arguments);
         return this;
     };
