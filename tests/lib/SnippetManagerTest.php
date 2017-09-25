@@ -136,6 +136,43 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
         $manager->addJs('');
     }
 
+    public function testSetCss()
+    {
+        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
+        $manager->addCss('test3');
+
+        $this->assertSame(
+            $manager,
+            $manager->setCss(['test1', 'test2'])
+        );
+        $this->assertSame(
+            ['test1', 'test2'],
+            $manager->getCss()
+        );
+    }
+
+    public function testAddCss()
+    {
+        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
+
+        $this->assertSame(
+            $manager,
+            $manager->addCss('test1')
+        );
+        $manager->addCss('test2');
+        $this->assertSame(
+            ['test1', 'test2'],
+            $manager->getCss()
+        );
+    }
+
+    public function testAddCssEmptyNameException()
+    {
+        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
+        $this->setExpectedException('\marvin255\bxcontent\Exception');
+        $manager->addCss('');
+    }
+
     public function testRegisterAssets()
     {
         $parameterName = 'parameter_' . mt_rand();
@@ -144,6 +181,8 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
         $label = 'label_' . mt_rand();
         $js1 = 'js_' . mt_rand();
         $js2 = 'js_2_' . mt_rand();
+        $css1 = 'css_' . mt_rand();
+        $css2 = 'css_2_' . mt_rand();
 
         $etalon = [
             $name => [
@@ -161,7 +200,7 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
         $snippet->method('getLabel')->will($this->returnValue($label));
 
         $asset = $this->getMockBuilder('\Bitrix\Main\Page\Asset')
-            ->setMethods(['addString', 'addJs'])
+            ->setMethods(['addString', 'addJs', 'addCss'])
             ->getMock();
         $asset->expects($this->at(0))
             ->method('addJs')
@@ -170,12 +209,19 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
             ->method('addJs')
             ->with($this->equalTo($js2), $this->equalTo(true));
         $asset->expects($this->at(2))
+            ->method('addCss')
+            ->with($this->equalTo($css1), $this->equalTo(true));
+        $asset->expects($this->at(3))
+            ->method('addCss')
+            ->with($this->equalTo($css2), $this->equalTo(true));
+        $asset->expects($this->at(4))
             ->method('addString')
             ->with($this->equalTo($managerData), $this->equalTo(true));
 
         $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
 
         $manager->addJs($js1)->addJs($js2);
+        $manager->addCss($css1)->addCss($css2);
 
         $manager->set($name, $snippet)->registerAssets($asset, $parameterName);
     }

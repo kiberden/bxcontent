@@ -32,6 +32,12 @@ class SnippetManager implements JsonSerializable
      * @var array
      */
     protected $js = [];
+    /**
+     * Список css файлов, которые нужно зарегистрировать для текущего набора сниппетов.
+     *
+     * @var array
+     */
+    protected $css = [];
 
     /**
      * Возвращает объект singleton, если он уже создан, либо создает новый
@@ -177,9 +183,53 @@ class SnippetManager implements JsonSerializable
     public function addJs($script)
     {
         if (trim($script) === '') {
-            throw new Exception('Script name can\'t blank');
+            throw new Exception('Script name can\'t be blank');
         }
         $this->js[] = $script;
+
+        return $this;
+    }
+
+    /**
+     * Возвращает набор css, которые зарегистриует данны объект.
+     *
+     * @return array
+     */
+    public function getCss()
+    {
+        return $this->css;
+    }
+
+    /**
+     * Задает список css для регистрации.
+     *
+     * @param array $css
+     *
+     * @return \marvin255\bxcontent\SnippetManager
+     */
+    public function setCss(array $css)
+    {
+        $this->css = [];
+        foreach ($css as $style) {
+            $this->addCss($style);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Добавляет стили к списку для регистрации.
+     *
+     * @param string $style
+     *
+     * @return \marvin255\bxcontent\SnippetManager
+     */
+    public function addCss($style)
+    {
+        if (trim($style) === '') {
+            throw new Exception('Stylesheet name can\'t be blank');
+        }
+        $this->css[] = $style;
 
         return $this;
     }
@@ -196,6 +246,11 @@ class SnippetManager implements JsonSerializable
         $js = $this->getJs();
         foreach ($js as $script) {
             $asset->addJs($script, true);
+        }
+
+        $css = $this->getCss();
+        foreach ($css as $style) {
+            $asset->addCss($style, true);
         }
 
         $managerData = "<script>$.fn.marvin255bxcontent('registerSnippets', ";
