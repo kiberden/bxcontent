@@ -208,6 +208,13 @@
         };
 
         self.renderSnippet = function ($block, snippet, key) {
+            //скрытое поле с типом данного сниппета
+            var $typeHidden = $block.children('input[type=hidden]');
+            if (!$typeHidden.length) {
+                var typeHiddenName = snippet.getName() + '[type]';
+                var $typeHidden = $('<input type="hidden" name="' + typeHiddenName + '" value="' + snippet.getType() + '">').appendTo($block);
+            }
+
             //заголовок сниппета
             var $header = $block.find('.marvin255bxcontent-snippets-snippet-header');
             if (!$header.length) {

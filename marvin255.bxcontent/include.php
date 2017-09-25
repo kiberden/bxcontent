@@ -15,25 +15,6 @@ $snippetManager->addCss('/bitrix/css/marvin255.bxcontent/plugin.css');
 $snippetManager->set('slider', new \marvin255\bxcontent\snippets\Base([
     'label' => 'Слайдер',
     'controls' => [
-        new \marvin255\bxcontent\controls\Input([
-            'name' => 'title',
-            'label' => 'Заголовок слайдера',
-            'multiple' => false,
-        ]),
-        new \marvin255\bxcontent\controls\Editor([
-            'name' => 'description',
-            'label' => 'Текст слайдера',
-            'multiple' => false,
-        ]),
-        new \marvin255\bxcontent\controls\Select([
-            'name' => 'class',
-            'label' => 'Скин слайдера',
-            'prompt' => 'Без скина',
-            'list' => [
-                'light' => 'Светлый',
-                'dark' => 'Темный',
-            ],
-        ]),
         new \marvin255\bxcontent\controls\Combine([
             'name' => 'slides',
             'label' => 'Слайды',
