@@ -30,7 +30,7 @@
     };
 
     BaseControlClass.prototype.setValue = function (value) {
-        this.setValue = value;
+        this.value = value;
         return this;
     };
 
@@ -198,11 +198,11 @@
             var $cobineBlock = $('<div class="marvin255bxcontent-snippets-snippet-combine-item" />').appendTo($block);
             var $cobineLabel = $('<div class="marvin255bxcontent-snippets-snippet-combine-item-label" />').appendTo($cobineBlock);
             var $cobineInput = $('<div class="marvin255bxcontent-snippets-snippet-combine-item-input" />').appendTo($cobineBlock);
-            var element = $.extend({}, element);
-            element.name = name + '[' + element.name + ']';
-            var control = controlsFactory.createInstance(element.type, element);
+            var settings = $.extend({}, element);
+            settings.name = name + '[' + element.name + ']';
+            var control = controlsFactory.createInstance(settings.type, settings);
             if (value && value[element.name]) {
-                control.setValue(element.name);
+                control.setValue(value[element.name]);
             }
             $cobineLabel.text(control.getLabel());
             control.render($cobineInput);

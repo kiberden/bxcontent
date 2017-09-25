@@ -76,7 +76,7 @@
                 var control = controlsFactory.createInstance(settings.controls[k].type, settings.controls[k]);
                 if (control) {
                     control.setParent(self);
-                    controls.add(control);
+                    controls.set(k, control);
                 }
             }
         }
@@ -117,10 +117,9 @@
 
         self.setValue = function (value) {
             if (!value) return;
-            for (var k in self.settings.controls) {
-                if (!self.settings.controls.hasOwnProperty(k)) continue;
-                self.settings.controls[k].setValue(value[k] || null);
-            }
+            self.getControls().map(function (control, key) {
+                control.setValue(value[key] || null);
+            });
         };
 
         self.setParent = function (parent) {
@@ -330,10 +329,20 @@
         //инициирует плагин на выбранных элементах
         'init': function () {
             return this.filter('textarea').each(function (i) {
-                var $textarea = $(this).hide();
+                var $textarea = $(this);
                 var $snippetsBlock = $('<div />').insertAfter($textarea);
                 var collection = new SnippetCollectionClass($textarea.attr('name'));
                 var view = new SnippetCollectionViewClass($snippetsBlock, collection, snippetsFactory);
+                var defaultValues = $textarea.val() ? JSON.parse($textarea.val()) : null;
+                if (defaultValues) {
+                    $.each(defaultValues, function (key, value) {
+                        var snippetValue = $.extend({}, value);
+                        var snippet = snippetValue.type ? snippetsFactory.createInstance(snippetValue.type) : null;
+                        if (!snippet) return;
+                        snippet.setValue(snippetValue);
+                        collection.add(snippet);
+                    });
+                }
                 view.render();
                 $textarea.data('marvin255bxcontent_viewer', view);
             });

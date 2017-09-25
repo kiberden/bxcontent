@@ -11,28 +11,6 @@ $snippetManager->addJs('/bitrix/js/marvin255.bxcontent/plugin.js');
 $snippetManager->addJs('/bitrix/js/marvin255.bxcontent/controls.js');
 $snippetManager->addCss('/bitrix/css/marvin255.bxcontent/plugin.css');
 
-//add test snippets
-$snippetManager->set('slider', new \marvin255\bxcontent\snippets\Base([
-    'label' => 'Слайдер',
-    'controls' => [
-        new \marvin255\bxcontent\controls\Combine([
-            'name' => 'slides',
-            'label' => 'Слайды',
-            'multiple' => true,
-            'elements' => [
-                new \marvin255\bxcontent\controls\File([
-                    'name' => 'image',
-                    'label' => 'Изображение',
-                ]),
-                new \marvin255\bxcontent\controls\Input([
-                    'name' => 'sign',
-                    'label' => 'Подпись',
-                ]),
-            ],
-        ]),
-    ],
-]));
-
 $event = new Event(
     'marvin255.bxcontent',
     'collectSnippets',

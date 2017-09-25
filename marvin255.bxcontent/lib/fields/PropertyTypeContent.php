@@ -27,7 +27,23 @@ class PropertyTypeContent extends \CUserTypeString
             'USER_TYPE' => 'Marvin255Bxcontent',
             'DESCRIPTION' => Loc::getMessage('BX_CONTENT_PROPERTY_TYPE_NAME'),
             'GetPropertyFieldHtml' => [__CLASS__, 'getPropertyFieldHtml'],
+            'ConvertToDB' => [__CLASS__, 'convertToDB'],
         ];
+    }
+
+    /**
+     * Проеобразовываем массив в json перед сохранением.
+     *
+     * @param array $arProperty Массив с описанием свойства
+     * @param array $value      Массив со значениями
+     *
+     * @return array
+     */
+    public function convertToDB($arProperty, $value)
+    {
+        $value['VALUE'] = json_encode($value['VALUE']);
+
+        return $value;
     }
 
     /**
