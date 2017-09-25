@@ -4,7 +4,10 @@
     display: inline-block;
     vertical-align: middle;
     margin: 0 1em 0 0;
-    cursor: pointer;
+}
+
+.marvin255bxcontent-selector-block select {
+    width: 300px;
 }
 
 
@@ -19,9 +22,8 @@
 }
 .marvin255bxcontent-snippets-snippet-remove {
     position: absolute;
-    right: 0.5em;
-    top: 0.5em;
-    cursor: pointer;
+    right: 0.8em;
+    top: 0.8em;
     line-height: 1;
     display: block;
 }
@@ -31,4 +33,40 @@
     font-weight: bold;
     line-height: 1.2;
     margin: 0 0 1em;
+}
+
+
+.marvin255bxcontent-snippets-snippet-controls-control {
+    border-top: 2px solid #e0e8ea;
+    padding: 1em;
+}
+.marvin255bxcontent-snippets-snippet-controls-control input[type=text] {
+    width: 80%;
+}
+.marvin255bxcontent-snippets-snippet-controls-control textarea {
+    width: 80%;
+    height: 6em;
+}
+.marvin255bxcontent-snippets-snippet-controls-control select {
+    width: 40%;
+}
+.marvin255bxcontent-snippets-snippet:hover .marvin255bxcontent-snippets-snippet-controls-control {
+    border-top: 2px solid #a3a5a5;
+}
+.marvin255bxcontent-snippets-snippet-multiple-items,
+.marvin255bxcontent-snippets-snippet-controls-control-label {
+    margin: 0 0 1em;
+}
+.marvin255bxcontent-snippets-snippet-multiple-items-item {
+    padding: 1em 0;
+    border-bottom: 2px solid #e0e8ea;
+    position: relative;
+}
+.marvin255bxcontent-snippets-snippet-multiple-items-item:first-child {
+    border-top: 2px solid #e0e8ea;
+}
+.marvin255bxcontent-snippets-snippet-multiple-items-delete {
+    position: absolute;
+    top: 0.5em;
+    right: 0;
 }

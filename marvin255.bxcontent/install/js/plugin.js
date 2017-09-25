@@ -150,7 +150,7 @@
     ControlFactoryClass.prototype.createInstance = function (type, settings) {
         var item = this.get(type);
         if (!item) return null;
-        return new item(settings, this);
+        return new item($.extend({}, settings), this);
     };
 
 
@@ -164,7 +164,7 @@
     SnippetFactoryClass.prototype = Object.create(CollectionClass.prototype);
     SnippetFactoryClass.prototype.constructor = SnippetFactoryClass;
     SnippetFactoryClass.prototype.createInstance = function (type) {
-        var item = this.get(type);
+        var item = $.extend({}, this.get(type));
         if (!item) return null;
         return new SnippetClass(type, item, this.controlsFactory);
     };
@@ -202,10 +202,7 @@
             //убирает сниппеты, которые отображены на форме, но которых нет в коллекции
             self.renderedCollection.map(function (item, key) {
                 if (!self.collection.get(key)) {
-                    item.stop(true, true).fadeOut(400, function () {
-                        item.empty().remove();
-                        self.renderedCollection.remove(key);
-                    });
+                    item.empty().remove();
                 }
             });
         };
@@ -236,7 +233,7 @@
                 $controls.empty();
             }
             snippet.getControls().map(function (item, key) {
-                var $controlArea = $('<div class="marvin255bxcontent-snippets-snippet-controls-control" />');
+                var $controlArea = $('<div class="marvin255bxcontent-snippets-snippet-controls-control" />').appendTo($controls);
                 var $label = $('<div class="marvin255bxcontent-snippets-snippet-controls-control-label" />').text(item.getLabel()).appendTo($controlArea);
                 var $control = $('<div class="marvin255bxcontent-snippets-snippet-controls-control-container" />').appendTo($controlArea);
                 item.render($control);
