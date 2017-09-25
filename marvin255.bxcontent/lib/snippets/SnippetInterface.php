@@ -21,4 +21,13 @@ interface SnippetInterface
      * @return array
      */
     public function getControls();
+
+    /**
+     * Возвращет строку с html для сниппета, заданного в массиве.
+     *
+     * @param array $snippetValues Массив вида "название поля => значение поля" для создания сниппета
+     *
+     * @return string
+     */
+    public function render(array $snippetValues);
 }

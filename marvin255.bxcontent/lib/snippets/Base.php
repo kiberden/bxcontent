@@ -5,6 +5,7 @@ namespace marvin255\bxcontent\snippets;
 use marvin255\bxcontent\controls\ControlInterface;
 use marvin255\bxcontent\SettingsTrait;
 use marvin255\bxcontent\Exception;
+use marvin255\bxcontent\views\ViewInterface;
 
 /**
  * Базовый сниппет, получает данные из массива в конструкторе
@@ -33,6 +34,16 @@ class Base implements SnippetInterface
     /**
      * @inheritdoc
      */
+    public function render(array $snippetValues)
+    {
+        $view = $this->getSetting('view');
+
+        return $view ? $view->render($snippetValues) : '';
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function check(array $settings)
     {
         if (empty($settings['label']) || trim($settings['label']) === '') {
@@ -52,6 +63,10 @@ class Base implements SnippetInterface
                 $controls[$control->getName()] = $control;
             }
             $settings['controls'] = $controls;
+        }
+
+        if (!empty($settings['view']) && !($settings['view'] instanceof ViewInterface)) {
+            throw new Exception('Snippet\'s view must be a ViewInterface instance');
         }
 
         return $settings;

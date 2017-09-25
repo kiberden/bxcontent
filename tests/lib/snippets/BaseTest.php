@@ -42,6 +42,39 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testRender()
+    {
+        $controlKey = 'controls_key_' . mt_rand();
+        $control = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
+            ->getMock();
+        $control->method('getName')->will($this->returnValue($controlKey));
+
+        $viewData = [
+            'view_key_' . mt_rand() => 'view_value_' . mt_rand(),
+            'view_key_1_' . mt_rand() => 'view_value_1_' . mt_rand(),
+        ];
+        $viewRendered = 'rendered_' . mt_rand();
+        $view = $this->getMockBuilder('\marvin255\bxcontent\views\ViewInterface')
+            ->getMock();
+        $view->expects($this->once())
+            ->method('render')
+            ->with($this->equalTo($viewData))
+            ->will($this->returnValue($viewRendered));
+
+        $arConfig = [
+            'label' => 'label_' . mt_rand(),
+            'controls' => [$control],
+            'view' => $view,
+        ];
+
+        $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
+
+        $this->assertSame(
+            $viewRendered,
+            $snippet->render($viewData)
+        );
+    }
+
     public function testEmptyLabelException()
     {
         $arConfig = [
@@ -103,6 +136,22 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->setExpectedException('\marvin255\bxcontent\Exception', $controlKey);
+        $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
+    }
+
+    public function testWrongViewInstanceException()
+    {
+        $controlKey = 'controls_key_' . mt_rand();
+        $control = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
+            ->getMock();
+        $control->method('getName')->will($this->returnValue($controlKey));
+        $arConfig = [
+            'label' => 'label_' . mt_rand(),
+            'controls' => [$control],
+            'view' => 123,
+        ];
+
+        $this->setExpectedException('\marvin255\bxcontent\Exception', 'view');
         $snippet = new \marvin255\bxcontent\snippets\Base($arConfig);
     }
 }
