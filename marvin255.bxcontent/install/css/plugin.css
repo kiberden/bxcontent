@@ -23,7 +23,7 @@
     right: 1em;
     top: 1em;
     cursor: pointer;
-    height: 2em;
+    line-height: 1;
     display: block;
 }
 .marvin255bxcontent-snippets-snippet-header {
