@@ -5,6 +5,8 @@
 [![License](https://poser.pugx.org/marvin255/bxcontent/license.svg)](https://packagist.org/packages/marvin255/bxcontent)
 [![Build Status](https://travis-ci.org/marvin255/bxcontent.svg?branch=master)](https://travis-ci.org/marvin255/bxcontent)
 
+Дополнительное поле для элементов инфоблока с возможностью создания сложных сниппетов со сложным html для контент менеджеров.
+
 
 
 ## Установка
