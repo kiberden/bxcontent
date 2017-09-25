@@ -250,7 +250,7 @@ class SnippetManager implements JsonSerializable
 
         $css = $this->getCss();
         foreach ($css as $style) {
-            $asset->addCss($style, true);
+            $asset->addString('<link rel="stylesheet" type="text/css" href="' . $style . '">', true);
         }
 
         $managerData = "<script>$.fn.marvin255bxcontent('registerSnippets', ";

@@ -191,10 +191,6 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $managerData = "<script>$.fn.marvin255bxcontent('registerSnippets', ";
-        $managerData .= json_encode($etalon);
-        $managerData .= ');</script>';
-
         $snippet = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')->getMock();
         $snippet->method('getControls')->will($this->returnValue($controls));
         $snippet->method('getLabel')->will($this->returnValue($label));
@@ -204,19 +200,19 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $asset->expects($this->at(0))
             ->method('addJs')
-            ->with($this->equalTo($js1), $this->equalTo(true));
+            ->with($this->stringContains($js1), $this->equalTo(true));
         $asset->expects($this->at(1))
             ->method('addJs')
-            ->with($this->equalTo($js2), $this->equalTo(true));
+            ->with($this->stringContains($js2), $this->equalTo(true));
         $asset->expects($this->at(2))
-            ->method('addCss')
-            ->with($this->equalTo($css1), $this->equalTo(true));
+            ->method('addString')
+            ->with($this->stringContains($css1), $this->equalTo(true));
         $asset->expects($this->at(3))
-            ->method('addCss')
-            ->with($this->equalTo($css2), $this->equalTo(true));
+            ->method('addString')
+            ->with($this->stringContains($css2), $this->equalTo(true));
         $asset->expects($this->at(4))
             ->method('addString')
-            ->with($this->equalTo($managerData), $this->equalTo(true));
+            ->with($this->stringContains(json_encode($etalon)), $this->equalTo(true));
 
         $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
 

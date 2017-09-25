@@ -8,6 +8,7 @@ require_once __DIR__ . '/lib/Autoloader.php';
 
 $snippetManager = SnippetManager::getInstance(true);
 $snippetManager->addJs('/bitrix/js/marvin255.bxcontent/plugin.js');
+$snippetManager->addCss('/bitrix/css/marvin255.bxcontent/plugin.css');
 
 //add test snippets
 $snippetManager->set('slider', new \marvin255\bxcontent\snippets\Base([
