@@ -41,7 +41,9 @@ class PropertyTypeContent extends \CUserTypeString
      */
     public function convertToDB($arProperty, $value)
     {
-        $value['VALUE'] = json_encode($value['VALUE']);
+        $value['VALUE'] = is_array($value['VALUE']) || is_object($value['VALUE'])
+            ? json_encode($value['VALUE'])
+            : $value['VALUE'];
 
         return $value;
     }

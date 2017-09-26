@@ -258,4 +258,29 @@ class SnippetManager implements JsonSerializable
         $managerData .= ');</script>';
         $asset->addString($managerData, true);
     }
+
+    /**
+     * Отображает все эелементы из массива или строки с валидным json в соответствии
+     * с настройками конкретных сниппетов.
+     *
+     * @param array|string $toRender
+     *
+     * @return string
+     */
+    public function render($toRender)
+    {
+        $return = '';
+        $toRender = is_string($toRender) ? json_decode($toRender, true) : $toRender;
+        if (is_array($toRender)) {
+            foreach ($toRender as $item) {
+                if (empty($item['type']) || !($snippet = $this->get($item['type']))) {
+                    continue;
+                }
+                unset($item['type']);
+                $return .= (string) $snippet->render($item);
+            }
+        }
+
+        return $return;
+    }
 }
