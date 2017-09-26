@@ -140,7 +140,58 @@ function collectSnippetsHandler($manager)
 
 
 
-## Расширение js и стилей
+## Представление результата
+
+Результат может представляться в открытой части как с помощью обработки полученного json в каждом шаблоне, в котором выводится элемент с полями-конструкторами, так и более централизованно - с помощью представлений, указанных для сниппета.
+
+При создании каждого сниппета можно указать объект, реализующий интерфейс `\marvin255\bxcontent\views\ViewInterface`, который будет отвечать за отображение данного конкретного сниппета.
+
+```php
+AddEventHandler('marvin255.bxcontent', 'collectSnippets', 'collectSnippetsHandler');
+function collectSnippetsHandler($manager)
+{
+    //получаем объект приложения битрикса для отображения компонентов
+    global $APPLICATION;
+    //сниппет с текстом и выпадающим списком
+    $manager->set('text_select', new \marvin255\bxcontent\snippets\Base([
+        'view' => new \marvin255\bxcontent\views\Component($APPLICATION, 'custom:slider'),
+        'label' => 'Текст и выпадающий список',
+        'controls' => [
+            new \marvin255\bxcontent\controls\Editor([
+                'name' => 'description',
+                'label' => 'Текстовый редактор',
+            ]),
+            new \marvin255\bxcontent\controls\Select([
+                'name' => 'class',
+                'label' => 'Список',
+                'prompt' => '-',
+                'list' => [
+                    'item1' => 'Опция 1',
+                    'item2' => 'Опция 2',
+                ],
+            ]),
+        ],
+    ]));
+}
+```
+
+Соотвественно, для вывода сформированного для всех сниппетов html, достаточно будет вызвать метод `render` менеджера сниппетов. Например, для компонента `bitrix:news.detail` это будет выглядеть так:
+
+```php
+<div>Далее будет конструктор</div>
+<?php echo \marvin255\bxcontent\SnippetManager::getInstance()->render($arResult['PROPERTIES']['html_constructor_property']['VALUE']); ?>
+```
+
+либо, при условии, что свойство указано для отображения:
+
+```php
+<div>Далее будет конструктор</div>
+<?php echo $arResult['DISPLAY_PROPERTIES']['html_constructor_property']['DISPLAY_VALUE']; ?>
+```
+
+
+
+## Добавление своих js и стилей
 
 Менеджер сниппетов обладает функционалом для добавления js и css.
 
