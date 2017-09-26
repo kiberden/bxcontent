@@ -178,15 +178,15 @@ function collectSnippetsHandler($manager)
 Соотвественно, для вывода сформированного для всех сниппетов html, достаточно будет вызвать метод `render` менеджера сниппетов. Например, для компонента `bitrix:news.detail` это будет выглядеть так:
 
 ```php
-<div>Далее будет конструктор</div>
-<?php echo \marvin255\bxcontent\SnippetManager::getInstance()->render($arResult['PROPERTIES']['html_constructor_property']['VALUE']); ?>
+//template.php
+echo \marvin255\bxcontent\SnippetManager::getInstance()->render($arResult['PROPERTIES']['html_constructor_property']['VALUE']);
 ```
 
 либо, при условии, что свойство указано для отображения:
 
 ```php
-<div>Далее будет конструктор</div>
-<?php echo $arResult['DISPLAY_PROPERTIES']['html_constructor_property']['DISPLAY_VALUE']; ?>
+//template.php
+echo $arResult['DISPLAY_PROPERTIES']['html_constructor_property']['DISPLAY_VALUE'];
 ```
 
 
