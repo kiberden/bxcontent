@@ -227,7 +227,7 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
         $toRender = [
             ['type' => 'snippet_1', 'key' => 'value_' . mt_rand()],
             ['type' => 'snippet_2', 'key_2' => 'value_2_' . mt_rand()],
-            ['type' => 'snippet_3', 'key_3'=> 'value_3_' . mt_rand()],
+            ['type' => 'snippet_3', 'key_3' => 'value_3_' . mt_rand()],
         ];
         $return1 = 'return_' . mt_rand();
         $return3 = 'return_3_' . mt_rand();

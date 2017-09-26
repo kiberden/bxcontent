@@ -28,6 +28,7 @@ class PropertyTypeContent extends \CUserTypeString
             'DESCRIPTION' => Loc::getMessage('BX_CONTENT_PROPERTY_TYPE_NAME'),
             'GetPropertyFieldHtml' => [__CLASS__, 'getPropertyFieldHtml'],
             'ConvertToDB' => [__CLASS__, 'convertToDB'],
+            'GetPublicViewHTML' => [__CLASS__, 'getPublicViewHTML'],
         ];
     }
 
@@ -46,6 +47,19 @@ class PropertyTypeContent extends \CUserTypeString
             : $value['VALUE'];
 
         return $value;
+    }
+
+    /**
+     * Вывод поля в публичной части со сформированным html.
+     *
+     * @param array $arProperty Массив с описанием свойства
+     * @param array $value      Массив со значениями
+     *
+     * @return array
+     */
+    public function getPublicViewHTML($arProperty, $value)
+    {
+        return isset($value['VALUE']) ? SnippetManager::getInstance()->render($value['VALUE']) : null;
     }
 
     /**
