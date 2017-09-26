@@ -342,6 +342,7 @@
                         snippet.setValue(snippetValue);
                         collection.add(snippet);
                     });
+                    $textarea.val('');
                 }
                 view.render();
                 $textarea.data('marvin255bxcontent_viewer', view);
