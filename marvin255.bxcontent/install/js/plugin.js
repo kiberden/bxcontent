@@ -177,9 +177,9 @@
     SnippetFactoryClass.prototype = Object.create(CollectionClass.prototype);
     SnippetFactoryClass.prototype.constructor = SnippetFactoryClass;
     SnippetFactoryClass.prototype.createInstance = function (type) {
-        var item = $.extend({}, this.get(type));
+        var item = this.get(type);
         if (!item) return null;
-        return new SnippetClass(type, item, this.controlsFactory);
+        return new SnippetClass(type, $.extend({}, item), this.controlsFactory);
     };
 
 
