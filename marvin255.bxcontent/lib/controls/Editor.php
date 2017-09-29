@@ -46,7 +46,7 @@ class Editor extends Base
             'html',
             [
                 'height' => 450,
-                'width' => '100%'
+                'width' => '100%',
             ],
             'N',
             0,
