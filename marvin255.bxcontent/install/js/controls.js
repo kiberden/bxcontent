@@ -189,6 +189,27 @@
             $input.val(value);
         }
     };
+    EditorClass.prototype.getBxFileJs = function (id, name) {
+        var script = '';
+        if (this.settings.template) {
+            var tpl = this.settings.template;
+            script = tpl.replace(/(<textarea.+name=\")_____name_____\"/g, '$1' + name + '"');
+            script = script.replace(/("inputName":")_____name_____\"/g, '$1' + name + '"');
+            script = script.replace(/_____name_____/g, id).replace(/_____type_____/g, id + '_value_type');
+        }
+        return script;
+    };
+    EditorClass.prototype._renderInternal = function ($block, name, value) {
+        $block.addClass('marvin255bxcontent-control-file-bitrix');
+        var id = getUniqueId();
+        var $input = $('<div />').appendTo($block);
+        var bxJs = this.getBxFileJs(id, name);
+        $(bxJs).appendTo($input);
+        $input.find('textarea').val(value);
+        $(bxJs).filter('script').each(function (key) {
+            eval(this.innerHTML);
+        });
+    };
 
     //регистрируем поле
     $.fn.marvin255bxcontent('registerControl', 'editor', EditorClass);

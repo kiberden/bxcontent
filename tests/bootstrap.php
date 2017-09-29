@@ -11,3 +11,11 @@ class CAdminFileDialog
         echo 'CAdminFileDialog::ShowScript';
     }
 }
+
+class CFileMan
+{
+    public static function AddHTMLEditorFrame()
+    {
+        echo 'CFileMan::AddHTMLEditorFrame';
+    }
+}

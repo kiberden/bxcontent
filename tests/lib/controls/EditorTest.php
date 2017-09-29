@@ -77,9 +77,11 @@ class EditorTest extends \PHPUnit_Framework_TestCase
             'name' => 'name_' . mt_rand(),
             'multiple' => true,
         ];
-        ksort($arConfig);
 
         $input = new \marvin255\bxcontent\controls\Editor($arConfig);
+
+        $arConfig['template'] = 'CFileMan::AddHTMLEditorFrame';
+        ksort($arConfig);
 
         $return = $input->jsonSerialize();
         ksort($return);
