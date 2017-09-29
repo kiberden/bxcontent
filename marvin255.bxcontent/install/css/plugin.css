@@ -42,6 +42,7 @@
 }
 .marvin255bxcontent-snippets-snippet-controls-control input[type=text] {
     width: 80%;
+    height: 2em;
 }
 .marvin255bxcontent-snippets-snippet-controls-control textarea {
     width: 80%;
@@ -81,4 +82,19 @@
 
 .marvin255bxcontent-snippets-snippet-combine-item:last-child {
     margin-bottom: 0;
+}
+
+.marvin255bxcontent-control-file-bitrix input[type=text] {
+    width: 50%;
+    margin-right: 3%;
+}
+.marvin255bxcontent-control-file-bitrix button {
+    width: 27%;
+    height: 2em;
+}
+.marvin255bxcontent-control-file-bitrix img {
+    display: block;
+    margin: 0.7em 0 0;
+    max-width: 100%;
+    max-height: 420px;
 }

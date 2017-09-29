@@ -77,9 +77,11 @@ class FileTest extends \PHPUnit_Framework_TestCase
             'name' => 'name_' . mt_rand(),
             'multiple' => true,
         ];
-        ksort($arConfig);
 
         $input = new \marvin255\bxcontent\controls\File($arConfig);
+
+        $arConfig['template'] = 'CAdminFileDialog::ShowScript';
+        ksort($arConfig);
 
         $return = $input->jsonSerialize();
         ksort($return);

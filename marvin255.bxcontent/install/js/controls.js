@@ -1,5 +1,17 @@
 (function ($, document, window) {
 
+    /**
+     * Счетчик для уникального идентификатора
+     */
+    var _uniqueId = 0;
+    /**
+     * Возвращает уникальный идентификатор
+     */
+    var getUniqueId = function () {
+        _uniqueId++;
+        return 'control_unique_' + _uniqueId;
+    };
+
 
     /**
      * Базовый класс поля со всем необходимым для поля функционалом
@@ -123,6 +135,40 @@
     };
     FileClass.prototype = Object.create(BaseControlClass.prototype);
     FileClass.prototype.constructor = FileClass;
+    FileClass.prototype.getBxFileJs = function (id) {
+        var script = '';
+        if (this.settings.template) {
+            var tpl = this.settings.template;
+            script = tpl.replace(/_____elementId_____/g, id).replace(/_____clickEvent_____/g, id + 'Click');
+        }
+        return script;
+    };
+    FileClass.prototype._renderInternal = function ($block, name, value) {
+        $block.addClass('marvin255bxcontent-control-file-bitrix');
+        var id = getUniqueId();
+        var $input = $('<input type="text" id="' + id + '" name="' + name + '" />').appendTo($block);
+        var $button = $('<button type="button" onclick="' + id + 'Click(); return false;" />').text('Загрузить файл').appendTo($block);
+        $input.on('change', function () {
+            var $this = $(this);
+            var $image = $this.next('img');
+            if ($this.val().match(/.+\.(png|jpg|jpeg)$/i)) {
+                if (!$image.length) {
+                    $image = $('<img />').insertAfter($button);
+                }
+                $image.attr('src', $this.val());
+            } else if ($image.length) {
+                $image.remove();
+            }
+        });
+        if (typeof value !== 'undefined') {
+            $input.val(value);
+            $input.trigger('change');
+        }
+        var bxJs = this.getBxFileJs(id);
+        $(bxJs).filter('script').each(function (key) {
+            eval(this.innerHTML);
+        });
+    };
 
     //регистрируем поле
     $.fn.marvin255bxcontent('registerControl', 'file', FileClass);
