@@ -35,7 +35,7 @@ class Media extends Pack
             'label' => 'Блоки',
             'multiple' => true,
             'elements' => [
-                new Input(['name' => 'image', 'label' => 'Изображение']),
+                new File(['name' => 'image', 'label' => 'Изображение']),
                 new Input(['name' => 'cation', 'label' => 'Заголовок']),
                 new Select([
                     'name' => 'float',
