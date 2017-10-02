@@ -14,7 +14,7 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
         ];
         $rendered = 'rendered_' . mt_rand();
 
-        $application = $control = $this->getMockBuilder('\CMain')
+        $application = $this->getMockBuilder('\CMain')
             ->setMethods(['IncludeComponent'])
             ->getMock();
         $application->method('IncludeComponent')
