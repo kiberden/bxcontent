@@ -245,6 +245,33 @@
                 return false;
             });
 
+            //кнопки для перемещения сниппета
+            var $moveButtons = $block.find('.marvin255bxcontent-snippets-snippet-move');
+            if ($moveButtons.length) {
+                $moveUp = $moveButtons.find('marvin255bxcontent-snippets-snippet-move-up');
+                $moveDown = $moveButtons.find('marvin255bxcontent-snippets-snippet-move-down');
+            } else {
+                $moveButtons = $('<div class="marvin255bxcontent-snippets-snippet-move" />').appendTo($block);
+                $moveUp = $('<button class="marvin255bxcontent-snippets-snippet-move-up" />').text('Выше').appendTo($moveButtons);
+                $moveDown = $('<button class="marvin255bxcontent-snippets-snippet-move-down" />').text('Ниже').appendTo($moveButtons);
+            }
+            $moveUp.off('click').on('click', function () {
+                var $upperSibling = $block.prev();
+                if ($upperSibling.length) {
+                    $block.insertBefore($upperSibling);
+                    self.renderSnippet($block, snippet, key);
+                }
+                return false;
+            });
+            $moveDown.off('click').on('click', function () {
+                var $lowerSibling = $block.next();
+                if ($lowerSibling.length) {
+                    $block.insertAfter($lowerSibling);
+                    self.renderSnippet($block, snippet, key);
+                }
+                return false;
+            });
+
             //контролы
             var $controls = $block.find('.marvin255bxcontent-snippets-snippet-controls');
             if (!$controls.length) {

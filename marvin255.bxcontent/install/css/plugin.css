@@ -20,12 +20,22 @@
 .marvin255bxcontent-snippets-snippet:hover {
     border: 2px solid #a3a5a5;
 }
+.marvin255bxcontent-snippets-snippet-remove,
+.marvin255bxcontent-snippets-snippet-move button {
+    line-height: 1;
+    height: 20px;
+    display: block;
+    float: left;
+}
 .marvin255bxcontent-snippets-snippet-remove {
     position: absolute;
     right: 0.8em;
     top: 0.8em;
-    line-height: 1;
-    display: block;
+}
+.marvin255bxcontent-snippets-snippet-move {
+    position: absolute;
+    right: 10em;
+    top: 0.8em;
 }
 .marvin255bxcontent-snippets-snippet-header {
     color: #000;
