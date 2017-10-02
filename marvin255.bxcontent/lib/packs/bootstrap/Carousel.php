@@ -39,6 +39,7 @@ class Carousel extends Pack
             'elements' => [
                 new File(['name' => 'image', 'label' => 'Изображение']),
                 new Input(['name' => 'caption', 'label' => 'Заголовок']),
+                new Input(['name' => 'link', 'label' => 'Ссылка']),
                 new Textarea(['name' => 'text', 'label' => 'Текст на слайде']),
             ],
         ]);
@@ -83,11 +84,17 @@ class Carousel extends Pack
                     $slides .= ' active';
                 }
                 $slides .= '">';
+                if (!empty($slide['link'])) {
+                    $slides .= '<a href="' . htmlentities($slide['link']) . '">';
+                }
                 $slides .= '<img src="' . htmlentities($slide['image']) . '"';
                 if (!empty($slide['caption'])) {
                     $slides .= ' alt="' . htmlentities($slide['caption']) . '"';
                 }
                 $slides .= '>';
+                if (!empty($slide['link'])) {
+                    $slides .= '</a>';
+                }
                 if (!empty($slide['caption']) || !empty($slide['text'])) {
                     $slides .= '<div class="carousel-caption">';
                     if (!empty($slide['caption'])) {

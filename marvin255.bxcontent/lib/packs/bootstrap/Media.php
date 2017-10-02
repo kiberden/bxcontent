@@ -34,16 +34,9 @@ class Media extends Pack
             'multiple' => true,
             'elements' => [
                 new File(['name' => 'image', 'label' => 'Изображение']),
-                new Input(['name' => 'cation', 'label' => 'Заголовок']),
-                new Select([
-                    'name' => 'float',
-                    'label' => 'Выравнивание',
-                    'list' => [
-                        'left' => 'По левому краю',
-                        'right' => 'По правому краю',
-                    ],
-                ]),
-                new Editor(['name' => 'content', 'label' => 'Содержимое']),
+                new Input(['name' => 'link', 'label' => 'Ссылка']),
+                new Input(['name' => 'caption', 'label' => 'Заголовок']),
+                new Editor(['name' => 'text', 'label' => 'Содержимое']),
             ],
         ]);
 
@@ -63,5 +56,49 @@ class Media extends Pack
      */
     protected function renderInternal(array $snippetValues)
     {
+        $return = '';
+        if (!empty($snippetValues['items']) && is_array($snippetValues['items'])) {
+            $key = 0;
+            $items = '';
+            foreach ($snippetValues['items'] as $item) {
+                if (empty($item['caption']) || empty($item['text'])) {
+                    continue;
+                }
+
+                $items .= '<div class="media">';
+                if (!empty($item['image'])) {
+                    $items .= '<div class="media-left">';
+                    if (!empty($item['link'])) {
+                        $items .= '<a href="' . htmlentities($item['link']) . '">';
+                    }
+                    $items .= '<img class="media-object" src="' . htmlentities($item['image']) . '" alt="' . htmlentities($item['caption']) . '">';
+                    if (!empty($item['link'])) {
+                        $items .= '</a>';
+                    }
+                    $items .= '</div>';
+                }
+                $items .= '<div class="media-body">';
+                $items .= '<h4 class="media-heading">';
+                if (!empty($item['link'])) {
+                    $items .= '<a href="' . htmlentities($item['link']) . '">';
+                }
+                $items .= htmlentities($item['caption']);
+                if (!empty($item['link'])) {
+                    $items .= '</a>';
+                }
+                $items .= '</h4>';
+                $items .= $item['text'];
+                $items .= '</div>';
+                $items .= '</div>';
+
+                ++$key;
+            }
+
+            if ($items) {
+                $return .= $items;
+            }
+        }
+
+        return $return;
     }
 }

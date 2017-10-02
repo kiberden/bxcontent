@@ -46,6 +46,7 @@ class CarouselTest extends \PHPUnit_Framework_TestCase
                     'image' => 'image_' . mt_rand(),
                     'caption' => 'caption_' . mt_rand(),
                     'text' => 'text_' . mt_rand(),
+                    'link' => 'link_' . mt_rand(),
                 ],
                 1 => [
                     'image' => 'image_1_' . mt_rand(),
@@ -73,6 +74,10 @@ class CarouselTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertContains(
             $renderArray['items'][0]['text'],
+            $rendered
+        );
+        $this->assertContains(
+            $renderArray['items'][0]['link'],
             $rendered
         );
 
