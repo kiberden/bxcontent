@@ -6,7 +6,6 @@ use marvin255\bxcontent\packs\Pack;
 use marvin255\bxcontent\controls\Input;
 use marvin255\bxcontent\controls\Editor;
 use marvin255\bxcontent\controls\File;
-use marvin255\bxcontent\controls\Select;
 use marvin255\bxcontent\controls\Combine;
 
 /**
