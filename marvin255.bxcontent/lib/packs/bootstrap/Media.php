@@ -8,7 +8,6 @@ use marvin255\bxcontent\controls\Editor;
 use marvin255\bxcontent\controls\File;
 use marvin255\bxcontent\controls\Select;
 use marvin255\bxcontent\controls\Combine;
-use marvin255\bxcontent\views\Component;
 
 /**
  * Сниппет для медиа объектов.
@@ -26,7 +25,6 @@ class Media extends Pack
 
         $return = [
             'label' => 'Медиа объекты',
-            'view' => new Component($APPLICATION, 'marvin255.bxcontent:bootstrap.media'),
             'controls' => [],
         ];
 
@@ -58,5 +56,12 @@ class Media extends Pack
     protected function getCodeForManager()
     {
         return 'bootstrap.media';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderInternal(array $snippetValues)
+    {
     }
 }

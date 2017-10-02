@@ -6,7 +6,6 @@ use marvin255\bxcontent\packs\Pack;
 use marvin255\bxcontent\controls\Input;
 use marvin255\bxcontent\controls\Editor;
 use marvin255\bxcontent\controls\Combine;
-use marvin255\bxcontent\views\Component;
 
 /**
  * Сниппет для табов.
@@ -24,7 +23,6 @@ class Tabs extends Pack
 
         $return = [
             'label' => 'Табы',
-            'view' => new Component($APPLICATION, 'marvin255.bxcontent:bootstrap.tabs'),
             'controls' => [],
         ];
 
@@ -47,5 +45,12 @@ class Tabs extends Pack
     protected function getCodeForManager()
     {
         return 'bootstrap.tabs';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderInternal(array $snippetValues)
+    {
     }
 }

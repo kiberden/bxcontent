@@ -6,11 +6,6 @@ class TabsTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaultConfig()
     {
-        global $APPLICATION;
-        $APPLICATION = $this
-            ->getMockBuilder('\CMain')
-            ->getMock();
-
         $testLabel = 'label_' . mt_rand();
 
         $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);

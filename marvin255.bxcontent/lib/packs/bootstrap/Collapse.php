@@ -6,7 +6,6 @@ use marvin255\bxcontent\packs\Pack;
 use marvin255\bxcontent\controls\Input;
 use marvin255\bxcontent\controls\Editor;
 use marvin255\bxcontent\controls\Combine;
-use marvin255\bxcontent\views\Component;
 
 /**
  * Сниппет для аккордеона.
@@ -24,7 +23,6 @@ class Collapse extends Pack
 
         $return = [
             'label' => 'Аккордеон',
-            'view' => new Component($APPLICATION, 'marvin255.bxcontent:bootstrap.collapse'),
             'controls' => [],
         ];
 
@@ -47,5 +45,12 @@ class Collapse extends Pack
     protected function getCodeForManager()
     {
         return 'bootstrap.collapse';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderInternal(array $snippetValues)
+    {
     }
 }

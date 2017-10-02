@@ -6,11 +6,6 @@ class CarouselTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaultConfig()
     {
-        global $APPLICATION;
-        $APPLICATION = $this
-            ->getMockBuilder('\CMain')
-            ->getMock();
-
         $testLabel = 'label_' . mt_rand();
 
         $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
@@ -24,6 +19,79 @@ class CarouselTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $testLabel,
             $manager->get('bootstrap.carousel')->getLabel()
+        );
+    }
+
+    public function testRenderView()
+    {
+        $renderArray = ['key_' . mt_rand() => 'value_' . mt_rand()];
+
+        $view = $this->getMockBuilder('\marvin255\bxcontent\views\ViewInterface')
+            ->setMethods(['render'])
+            ->getMock();
+        $view->expects($this->once())
+            ->method('render')
+            ->with($this->equalTo($renderArray));
+
+        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
+        \marvin255\bxcontent\packs\bootstrap\Carousel::setTo($manager, ['view' => $view]);
+        $manager->get('bootstrap.carousel')->render($renderArray);
+    }
+
+    public function testRenderInternal()
+    {
+        $renderArray = [
+            'slides' => [
+                0 => [
+                    'image' => 'image_' . mt_rand(),
+                    'caption' => 'caption_' . mt_rand(),
+                    'text' => 'text_' . mt_rand(),
+                ],
+                1 => [
+                    'image' => 'image_1_' . mt_rand(),
+                    'text' => 'text_1_' . mt_rand(),
+                ],
+                2 => [
+                    'text' => 'text_2_' . mt_rand(),
+                    'caption' => 'caption_' . mt_rand(),
+                ],
+            ],
+        ];
+
+        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
+        \marvin255\bxcontent\packs\bootstrap\Carousel::setTo($manager);
+
+        $rendered = $manager->get('bootstrap.carousel')->render($renderArray);
+
+        $this->assertContains(
+            $renderArray['slides'][0]['image'],
+            $rendered
+        );
+        $this->assertContains(
+            $renderArray['slides'][0]['caption'],
+            $rendered
+        );
+        $this->assertContains(
+            $renderArray['slides'][0]['text'],
+            $rendered
+        );
+
+        $this->assertContains(
+            $renderArray['slides'][1]['image'],
+            $rendered
+        );
+        $this->assertContains(
+            $renderArray['slides'][1]['text'],
+            $rendered
+        );
+
+        $this->assertNotContains(
+            $renderArray['slides'][2]['caption'],
+            $rendered
+        );
+        $this->assertNotContains(
+            $renderArray['slides'][2]['text'],
+            $rendered
         );
     }
 }
