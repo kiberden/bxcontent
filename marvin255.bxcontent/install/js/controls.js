@@ -128,6 +128,26 @@
 
 
     /**
+     * Определение поля с textarea
+     */
+    var TextareaClass = function (settings, controlsFactory) {
+        BaseControlClass.apply(this, [settings, controlsFactory]);
+    };
+    TextareaClass.prototype = Object.create(BaseControlClass.prototype);
+    TextareaClass.prototype.constructor = TextareaClass;
+    TextareaClass.prototype._renderInternal = function ($block, name, value) {
+        var $input = $('<textarea />').appendTo($block);
+        $input.attr('name', name);
+        if (typeof value !== 'undefined') {
+            $input.val(value);
+        }
+    };
+
+    //регистрируем поле
+    $.fn.marvin255bxcontent('registerControl', 'textarea', TextareaClass);
+
+
+    /**
      * Определение поля с файлом
      */
     var FileClass = function (settings, controlsFactory) {
