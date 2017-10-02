@@ -41,7 +41,7 @@ class CarouselTest extends \PHPUnit_Framework_TestCase
     public function testRenderInternal()
     {
         $renderArray = [
-            'slides' => [
+            'items' => [
                 0 => [
                     'image' => 'image_' . mt_rand(),
                     'caption' => 'caption_' . mt_rand(),
@@ -64,33 +64,33 @@ class CarouselTest extends \PHPUnit_Framework_TestCase
         $rendered = $manager->get('bootstrap.carousel')->render($renderArray);
 
         $this->assertContains(
-            $renderArray['slides'][0]['image'],
+            $renderArray['items'][0]['image'],
             $rendered
         );
         $this->assertContains(
-            $renderArray['slides'][0]['caption'],
+            $renderArray['items'][0]['caption'],
             $rendered
         );
         $this->assertContains(
-            $renderArray['slides'][0]['text'],
+            $renderArray['items'][0]['text'],
             $rendered
         );
 
         $this->assertContains(
-            $renderArray['slides'][1]['image'],
+            $renderArray['items'][1]['image'],
             $rendered
         );
         $this->assertContains(
-            $renderArray['slides'][1]['text'],
+            $renderArray['items'][1]['text'],
             $rendered
         );
 
         $this->assertNotContains(
-            $renderArray['slides'][2]['caption'],
+            $renderArray['items'][2]['caption'],
             $rendered
         );
         $this->assertNotContains(
-            $renderArray['slides'][2]['text'],
+            $renderArray['items'][2]['text'],
             $rendered
         );
     }

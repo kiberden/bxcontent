@@ -33,7 +33,7 @@ class Carousel extends Pack
         ];
 
         $return['controls'][] = new Combine([
-            'name' => 'slides',
+            'name' => 'items',
             'label' => 'Слайды',
             'multiple' => true,
             'elements' => [
@@ -60,14 +60,14 @@ class Carousel extends Pack
     protected function renderInternal(array $snippetValues)
     {
         $return = '';
-        if (!empty($snippetValues['slides']) && is_array($snippetValues['slides'])) {
+        if (!empty($snippetValues['items']) && is_array($snippetValues['items'])) {
             $id = 'bootstrap-carousel-' . static::$idCounter;
             ++static::$idCounter;
 
             $indicators = '';
             $slides = '';
             $sliderKey = 0;
-            foreach ($snippetValues['slides'] as $slide) {
+            foreach ($snippetValues['items'] as $slide) {
                 if (empty($slide['image'])) {
                     continue;
                 }
