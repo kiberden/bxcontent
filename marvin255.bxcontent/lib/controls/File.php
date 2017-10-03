@@ -46,15 +46,15 @@ class File extends Base
                 'ELEMENT_ID' => '_____elementId_____',
             ],
             'arPath' => [
-                'SITE' => defined('SITE_ID') ? SITE_ID : '',
                 'PATH' => '/upload',
             ],
             'select' => 'F',
             'operation' => 'O',
             'showUploadTab' => true,
             'showAddToMenuTab' => false,
-            'allowAllFiles' => true,
-            'SaveConfig' => true,
+            'allowAllFiles' => false,
+            'SaveConfig' => false,
+            'fileFilter' => 'png,jpg,jpeg,pdf,doc,docx,xls,xlsx,ppt,pptx,txt',
         ];
 
         ob_start();
