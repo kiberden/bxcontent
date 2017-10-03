@@ -23,8 +23,8 @@ class UserTypeContent
     public function GetUserTypeDescription()
     {
         return [
-            'USER_TYPE_ID' => 'Marvin255Bxcontent',
-            'CLASS_NAME' => '\marvin255\bxcontent\UserTypeContent',
+            'USER_TYPE_ID' => 'Marvin255BxcontentUf',
+            'CLASS_NAME' => __CLASS__,
             'DESCRIPTION' => Loc::getMessage('BX_CONTENT_PROPERTY_TYPE_NAME'),
             'BASE_TYPE' => 'string',
         ];
