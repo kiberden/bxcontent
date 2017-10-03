@@ -143,11 +143,13 @@ function collectSnippetsHandler($manager)
 
 2. `\marvin255\bxcontent\controls\Editor` - wysiwyg-редактор,
 
-3. `\marvin255\bxcontent\controls\File` - поле с возможностью выбрать или загрузить файл в файловую систему Битрикса,
+3. `\marvin255\bxcontent\controls\Textarea` - поле для ввода нескольких строк текста (textarea),
 
-4. `\marvin255\bxcontent\controls\Select` - поле с ограниченным количеством вариантов для выбора (select),
+4. `\marvin255\bxcontent\controls\File` - поле с возможностью выбрать или загрузить файл в файловую систему Битрикса,
 
-4. `\marvin255\bxcontent\controls\Combine` - поле с помощью которого можно скомбинировать несколько других полей.
+5. `\marvin255\bxcontent\controls\Select` - поле с ограниченным количеством вариантов для выбора (select),
+
+6. `\marvin255\bxcontent\controls\Combine` - поле с помощью которого можно скомбинировать несколько других полей.
 
 
 
