@@ -17,6 +17,7 @@
 * [Доступные типы элементов управления](#Доступные-типы-элементов-управления).
 * [Представление результата](#Представление-результата).
 * [Добавление своих js и стилей](#Добавление-своих-js-и-стилей).
+* [Сборки сниппетов](#Сборки-сниппетов).
 
 
 
@@ -218,3 +219,29 @@ function collectSnippetsHandler($manager)
     $manager->addCss('/bitrix/css/marvin255.bxcontent/plugin.css');
 }
 ```
+
+
+
+## Сборки сниппетов
+
+Часть сниппетов заранее определена и добавлена в состав библиотеки. Сниппет из сборки должен наследовать классу `\marvin255\bxcontent\packs\Pack`. Такой сниппет может быть  добавлен к менеджеру с помощью функции `\marvin255\bxcontent\packs\Pack::setTo`, которая первым параметром принимает объект менеджера, а вторым - массив настроек для сниппета. Кроме того, сниппет из сборки имеет встроенные методы для отображения.
+
+```php
+use marvin255\bxcontent\packs\bootstrap;
+
+AddEventHandler('marvin255.bxcontent', 'collectSnippets', 'collectSnippetsHandler');
+function collectSnippetsHandler($manager)
+{
+    bootstrap\Carousel::setTo($manager, ['label' => 'кастомное название сниппета перепишет то, что задано в сниппете']);
+    bootstrap\Collapse::setTo($manager);
+    bootstrap\Media::setTo($manager);
+    bootstrap\Tabs::setTo($manager);
+}
+```
+
+**Bootstrap**
+
+`\marvin255\bxcontent\packs\bootstrap\Carousel` - [слайдер из bootsrap](https://getbootstrap.com/docs/3.3/javascript/#carousel).
+`\marvin255\bxcontent\packs\bootstrap\Collapse` - [аккордеон из bootsrap](https://getbootstrap.com/docs/3.3/javascript/#collapse).
+`\marvin255\bxcontent\packs\bootstrap\Tabs` - [закладки из bootsrap](https://getbootstrap.com/docs/3.3/javascript/#tabs).
+`\marvin255\bxcontent\packs\bootstrap\Media` - [медиа объекты из bootsrap](https://getbootstrap.com/docs/3.3/components/#media).
