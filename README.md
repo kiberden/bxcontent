@@ -239,9 +239,12 @@ function collectSnippetsHandler($manager)
 }
 ```
 
-**Bootstrap**
+**Сборка сниппетов для bootstrap**
 
 `\marvin255\bxcontent\packs\bootstrap\Carousel` - [слайдер из bootsrap](https://getbootstrap.com/docs/3.3/javascript/#carousel).
+
 `\marvin255\bxcontent\packs\bootstrap\Collapse` - [аккордеон из bootsrap](https://getbootstrap.com/docs/3.3/javascript/#collapse).
+
 `\marvin255\bxcontent\packs\bootstrap\Tabs` - [закладки из bootsrap](https://getbootstrap.com/docs/3.3/javascript/#tabs).
+
 `\marvin255\bxcontent\packs\bootstrap\Media` - [медиа объекты из bootsrap](https://getbootstrap.com/docs/3.3/components/#media).
