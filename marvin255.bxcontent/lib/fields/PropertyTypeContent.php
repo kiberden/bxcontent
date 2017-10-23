@@ -133,9 +133,15 @@ class PropertyTypeContent extends \CUserTypeString
         CJSCore::Init(['jquery']);
         SnippetManager::getInstance()->registerAssets(Asset::getInstance());
 
-        $return = '<textarea style="display: none;" class="marvin255bxcontent-init" name="' . htmlentities($strHTMLControlName['VALUE']) . '">';
+        $id = 'Marvin255Bxcontent-' . intval($arProperty['ID']);
+        $options = isset($arProperty['USER_TYPE_SETTINGS']) && is_array($arProperty['USER_TYPE_SETTINGS'])
+            ? json_encode($arProperty['USER_TYPE_SETTINGS'])
+            : 'null';
+
+        $return = '<textarea style="display: none;" id="' . $id . '" name="' . htmlentities($strHTMLControlName['VALUE']) . '">';
         $return .= htmlentities($value['VALUE']);
         $return .= '</textarea>';
+        $return .= "<script>jQuery('#{$id}').marvin255bxcontent({$options});</script>";
 
         return $return;
     }

@@ -186,13 +186,14 @@
     /**
      * Представление для блока сниппетов.
      */
-    var SnippetCollectionViewClass = function ($domBlock, collection, snippetsFactory) {
+    var SnippetCollectionViewClass = function ($domBlock, collection, snippetsFactory, options) {
         var self = this;
 
         self.domBlock = $($domBlock);
         self.collection = collection;
         self.renderedCollection = new CollectionClass;
         self.snippetsFactory = snippetsFactory;
+        self.options = options;
 
         self.render = function () {
             self.renderSnippets();
@@ -295,6 +296,9 @@
 
             var typesOptions = '<option value="">Выберите тип блока</option>';
             self.snippetsFactory.map(function (item, key) {
+                if (self.options && self.options.allowed_snippets && $.inArray(key, self.options.allowed_snippets) === -1) {
+                    return true;
+                }
                 typesOptions += '<option value="' + key + '">' + item.label + '</option>';
             });
             var $select = $selectorBlock.find('select');
@@ -354,12 +358,12 @@
             return snippetsFactory.setCollection(snippets);
         },
         //инициирует плагин на выбранных элементах
-        'init': function () {
+        'init': function (options) {
             return this.filter('textarea').each(function (i) {
                 var $textarea = $(this);
                 var $snippetsBlock = $('<div />').insertAfter($textarea);
                 var collection = new SnippetCollectionClass($textarea.attr('name'));
-                var view = new SnippetCollectionViewClass($snippetsBlock, collection, snippetsFactory);
+                var view = new SnippetCollectionViewClass($snippetsBlock, collection, snippetsFactory, options);
                 var defaultValues = $textarea.val() ? JSON.parse($textarea.val()) : null;
                 if (defaultValues) {
                     $.each(defaultValues, function (key, value) {
