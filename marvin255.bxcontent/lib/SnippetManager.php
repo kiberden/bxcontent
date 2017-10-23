@@ -117,6 +117,17 @@ class SnippetManager implements JsonSerializable
     }
 
     /**
+     * Возвращает список всех сниппетов, зарегистрированных на данный момент в
+     * менеджере.
+     *
+     * @return array
+     */
+    public function getSnippetsList()
+    {
+        return $this->snippets;
+    }
+
+    /**
      * Приводит имена сниппетов в единообразный вид.
      *
      * @param string $name

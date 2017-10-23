@@ -29,6 +29,8 @@ class PropertyTypeContent extends \CUserTypeString
             'GetPropertyFieldHtml' => [__CLASS__, 'getPropertyFieldHtml'],
             'ConvertToDB' => [__CLASS__, 'convertToDB'],
             'GetPublicViewHTML' => [__CLASS__, 'getPublicViewHTML'],
+            'GetSettingsHTML' => [__CLASS__, 'getSettingsHTML'],
+            'PrepareSettings' => [__CLASS__, 'prepareSettings'],
         ];
     }
 
@@ -60,6 +62,61 @@ class PropertyTypeContent extends \CUserTypeString
     public function getPublicViewHTML($arProperty, $value)
     {
         return isset($value['VALUE']) ? SnippetManager::getInstance()->render($value['VALUE']) : null;
+    }
+
+    /**
+     * Возвращает форму для настройки поля в административной части.
+     *
+     * @param array $arProperty         Массив с описанием свойства
+     * @param array $strHTMLControlName Имя элемента управления для заполнения настроек свойства
+     * @param array $arPropertyFields   В параметре arPropertyFields можно вернуть дополнительные флаги управления формой
+     *
+     * @return string
+     */
+    public function getSettingsHTML($arProperty, $strHTMLControlName, &$arPropertyFields)
+    {
+        $return = '';
+        $allSnippets = SnippetManager::getInstance()->getSnippetsList();
+        if ($allSnippets) {
+            $checked = isset($arProperty['USER_TYPE_SETTINGS']['allowed_snippets'])
+                ? $arProperty['USER_TYPE_SETTINGS']['allowed_snippets']
+                : [];
+            $return .= '<tr>';
+            $return .= '<td style="vertical-align: top;">' . Loc::getMessage('BX_CONTENT_SELECT_SNIPPETS') . ':</td>';
+            $return .= '<td>';
+            foreach ($allSnippets as $key => $snippet) {
+                $isChecked = in_array($key, $checked);
+                $return .= '<div style="margin: 0 0 0.3em;">';
+                $return .= '<label>';
+                $return .= '<input type="checkbox" value="' . htmlentities($key) . '" name="' . $strHTMLControlName['NAME'] . '[allowed_snippets][]"' . ($isChecked ? ' checked' : '') . '>';
+                $return .= ' ' . htmlspecialchars($snippet->getLabel());
+                $return .= '</label>';
+                $return .= '</div>';
+            }
+            $return .= '</td>';
+            $return .= '</tr>';
+        }
+
+        $arPropertyFields = [
+            'HIDE' => ['DEFAULT_VALUE'],
+        ];
+
+        return $return;
+    }
+
+    /**
+     * Метод возвращает либо массив с дополнительными настройками свойства,
+     * либо весь набор настроек, включая стандартные.
+     *
+     * @param array $arFields
+     *
+     * @return array
+     */
+    public function prepareSettings($arFields)
+    {
+        return isset($arFields['USER_TYPE_SETTINGS'])
+            ? $arFields['USER_TYPE_SETTINGS']
+            : [];
     }
 
     /**

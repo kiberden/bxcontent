@@ -69,6 +69,41 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
         $manager->remove($name);
     }
 
+    public function testGetSnippetsList()
+    {
+        $name = 'type_' . mt_rand();
+        $name1 = 'type_1_' . mt_rand();
+        $name2 = 'type_2_' . mt_rand();
+        $snippet = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')
+            ->getMock();
+        $snippet1 = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')
+            ->getMock();
+        $snippet2 = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')
+            ->getMock();
+
+        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
+
+        $this->assertSame(
+            [],
+            $manager->getSnippetsList()
+        );
+
+        $manager->set($name, $snippet);
+        $manager->set($name2, $snippet2);
+        $manager->set($name1, $snippet1);
+        $manager->remove($name);
+
+        $toCheck = $manager->getSnippetsList();
+        ksort($toCheck);
+        $etalon = [$name1 => $snippet1, $name2 => $snippet2];
+        ksort($etalon);
+
+        $this->assertSame(
+            $etalon,
+            $toCheck
+        );
+    }
+
     public function testJsonSerialize()
     {
         $name = 'type_' . mt_rand();
