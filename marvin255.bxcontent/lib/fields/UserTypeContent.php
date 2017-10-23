@@ -31,6 +31,56 @@ class UserTypeContent
     }
 
     /**
+     * Возвращает форму для настройки поля в административной части.
+     *
+     * @param bool|array $arUserField
+     * @param array      $arHtmlControl
+     * @param bool       $bVarsFromForm
+     *
+     * @return string
+     */
+    public function GetSettingsHTML($arUserField = false, $arHtmlControl, $bVarsFromForm)
+    {
+        $return = '';
+        $allSnippets = SnippetManager::getInstance()->getSnippetsList();
+        if ($allSnippets) {
+            $checked = isset($arUserField['SETTINGS']['allowed_snippets'])
+                ? $arUserField['SETTINGS']['allowed_snippets']
+                : [];
+            $return .= '<tr>';
+            $return .= '<td style="vertical-align: top;">' . Loc::getMessage('BX_CONTENT_SELECT_SNIPPETS') . ':</td>';
+            $return .= '<td>';
+            foreach ($allSnippets as $key => $snippet) {
+                $isChecked = in_array($key, $checked);
+                $return .= '<div style="margin: 0 0 0.3em;">';
+                $return .= '<label>';
+                $return .= '<input type="checkbox" value="' . htmlentities($key) . '" name="' . $arHtmlControl['NAME'] . '[allowed_snippets][]"' . ($isChecked ? ' checked' : '') . '>';
+                $return .= ' ' . htmlspecialchars($snippet->getLabel());
+                $return .= '</label>';
+                $return .= '</div>';
+            }
+            $return .= '</td>';
+            $return .= '</tr>';
+        }
+
+        return $return;
+    }
+
+    /**
+     * Метод возвращает массив с дополнительными настройками свойства.
+     *
+     * @param array $arFields
+     *
+     * @return array
+     */
+    public function PrepareSettings($arUserField)
+    {
+        return isset($arUserField['SETTINGS'])
+            ? $arUserField['SETTINGS']
+            : [];
+    }
+
+    /**
      * Возвращает html для поля для ввода, которое отбразится в административной части.
      *
      * @param array $field   Свойства поля из настроек административной части
@@ -43,9 +93,15 @@ class UserTypeContent
         CJSCore::Init(['jquery']);
         SnippetManager::getInstance()->registerAssets(Asset::getInstance());
 
-        $return = '<textarea style="display: none;" class="marvin255bxcontent-init" name="' . htmlentities($control['NAME']) . '">';
+        $id = 'Marvin255BxcontentUf-' . intval($field['ID']);
+        $options = isset($field['SETTINGS']) && is_array($field['SETTINGS'])
+            ? json_encode($field['SETTINGS'])
+            : 'null';
+
+        $return = '<textarea style="display: none;" id="' . $id . '" name="' . htmlentities($control['NAME']) . '">';
         $return .= htmlentities(isset($field['VALUE']) ? $field['VALUE'] : '');
         $return .= '</textarea>';
+        $return .= "<script>jQuery('#{$id}').marvin255bxcontent({$options});</script>";
 
         return $return;
     }
