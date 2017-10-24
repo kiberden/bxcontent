@@ -141,7 +141,7 @@ class PropertyTypeContent extends \CUserTypeString
         $return = '<textarea style="display: none;" id="' . $id . '" name="' . htmlentities($strHTMLControlName['VALUE']) . '">';
         $return .= htmlentities($value['VALUE']);
         $return .= '</textarea>';
-        $return .= "<script>jQuery('#{$id}').marvin255bxcontent({$options});</script>";
+        $return .= "<script>jQuery(document).on('ready', function () { jQuery('#{$id}').marvin255bxcontent({$options}); });</script>";
 
         return $return;
     }

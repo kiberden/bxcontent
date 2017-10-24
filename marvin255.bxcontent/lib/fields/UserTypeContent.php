@@ -101,7 +101,7 @@ class UserTypeContent
         $return = '<textarea style="display: none;" id="' . $id . '" name="' . htmlentities($control['NAME']) . '">';
         $return .= htmlentities(isset($field['VALUE']) ? $field['VALUE'] : '');
         $return .= '</textarea>';
-        $return .= "<script>jQuery('#{$id}').marvin255bxcontent({$options});</script>";
+        $return .= "<script>jQuery(document).on('ready', function () { jQuery('#{$id}').marvin255bxcontent({$options}); });</script>";
 
         return $return;
     }
