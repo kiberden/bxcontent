@@ -5,7 +5,7 @@ namespace marvin255\bxcontent\packs\bootstrap;
 use marvin255\bxcontent\packs\Pack;
 use marvin255\bxcontent\controls\Input;
 use marvin255\bxcontent\controls\Editor;
-use marvin255\bxcontent\controls\File;
+use marvin255\bxcontent\controls\Image;
 use marvin255\bxcontent\controls\Combine;
 
 /**
@@ -32,7 +32,7 @@ class Media extends Pack
             'label' => 'Блоки',
             'multiple' => true,
             'elements' => [
-                new File(['name' => 'image', 'label' => 'Изображение']),
+                new Image(['name' => 'image', 'label' => 'Изображение']),
                 new Input(['name' => 'link', 'label' => 'Ссылка']),
                 new Input(['name' => 'caption', 'label' => 'Заголовок']),
                 new Editor(['name' => 'text', 'label' => 'Содержимое']),

@@ -5,7 +5,7 @@ namespace marvin255\bxcontent\packs\bootstrap;
 use marvin255\bxcontent\packs\Pack;
 use marvin255\bxcontent\controls\Input;
 use marvin255\bxcontent\controls\Textarea;
-use marvin255\bxcontent\controls\File;
+use marvin255\bxcontent\controls\Image;
 use marvin255\bxcontent\controls\Combine;
 
 /**
@@ -37,7 +37,7 @@ class Carousel extends Pack
             'label' => 'Слайды',
             'multiple' => true,
             'elements' => [
-                new File(['name' => 'image', 'label' => 'Изображение']),
+                new Image(['name' => 'image', 'label' => 'Изображение']),
                 new Input(['name' => 'caption', 'label' => 'Заголовок']),
                 new Input(['name' => 'link', 'label' => 'Ссылка']),
                 new Textarea(['name' => 'text', 'label' => 'Текст на слайде']),

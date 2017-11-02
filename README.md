@@ -148,9 +148,11 @@ function collectSnippetsHandler($manager)
 
 4. `\marvin255\bxcontent\controls\File` - поле с возможностью выбрать или загрузить файл в файловую систему Битрикса,
 
-5. `\marvin255\bxcontent\controls\Select` - поле с ограниченным количеством вариантов для выбора (select),
+5. `\marvin255\bxcontent\controls\Image` - поле с возможностью выбрать или загрузить изображение в файловую систему Битрикса,
 
-6. `\marvin255\bxcontent\controls\Combine` - поле с помощью которого можно скомбинировать несколько других полей.
+6. `\marvin255\bxcontent\controls\Select` - поле с ограниченным количеством вариантов для выбора (select),
+
+7. `\marvin255\bxcontent\controls\Combine` - поле с помощью которого можно скомбинировать несколько других полей.
 
 
 
