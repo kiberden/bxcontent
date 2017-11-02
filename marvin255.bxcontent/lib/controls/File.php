@@ -25,6 +25,7 @@ class File extends Base
     {
         $return = parent::jsonSerialize();
         $return['template'] = $this->getTemplate();
+        $return['allowedExtensions'] = $this->getAllowedExtensions();
 
         return $return;
     }
@@ -54,13 +55,43 @@ class File extends Base
             'showAddToMenuTab' => false,
             'allowAllFiles' => false,
             'SaveConfig' => false,
-            'fileFilter' => 'png,jpg,jpeg,pdf,doc,docx,xls,xlsx,ppt,pptx,txt',
         ];
+
+        if ($exts = $this->getAllowedExtensions()) {
+            $cAdminFileDialog['fileFilter'] = implode(',', $exts);
+        }
 
         ob_start();
         ob_implicit_flush(false);
         CAdminFileDialog::ShowScript($cAdminFileDialog);
 
         return ob_get_clean();
+    }
+
+    /**
+     * Возвращает список расширений файлов, которые можно загрузить с помощью этого поля.
+     *
+     * @return null|array
+     */
+    public function getAllowedExtensions()
+    {
+        return $this->getSetting('allowedExtensions');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function check(array $settings)
+    {
+        $settings = parent::check($settings);
+
+        if (!empty($settings['allowedExtensions'])) {
+            if (!is_array($settings['allowedExtensions'])) {
+                $settings['allowedExtensions'] = explode(',', $settings['allowedExtensions']);
+            }
+            $settings['allowedExtensions'] = array_diff(array_map('trim', $settings['allowedExtensions']), ['']);
+        }
+
+        return $settings;
     }
 }

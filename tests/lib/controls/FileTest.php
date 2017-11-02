@@ -13,7 +13,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
             'multiple' => true,
         ];
 
-        $input = new \marvin255\bxcontent\controls\File($arConfig);
+        $input = $this->getTestedObject($arConfig);
 
         $this->assertSame(
             'file',
@@ -29,7 +29,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
             'multiple' => true,
         ];
 
-        $input = new \marvin255\bxcontent\controls\File($arConfig);
+        $input = $this->getTestedObject($arConfig);
 
         $this->assertSame(
             $arConfig['name'],
@@ -45,7 +45,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
             'multiple' => true,
         ];
 
-        $input = new \marvin255\bxcontent\controls\File($arConfig);
+        $input = $this->getTestedObject($arConfig);
 
         $this->assertSame(
             $arConfig['label'],
@@ -61,7 +61,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
             'multiple' => true,
         ];
 
-        $input = new \marvin255\bxcontent\controls\File($arConfig);
+        $input = $this->getTestedObject($arConfig);
 
         $this->assertSame(
             $arConfig['multiple'],
@@ -76,9 +76,10 @@ class FileTest extends \PHPUnit_Framework_TestCase
             'label' => 'label_' . mt_rand(),
             'name' => 'name_' . mt_rand(),
             'multiple' => true,
+            'allowedExtensions' => ['png', 'jpg'],
         ];
 
-        $input = new \marvin255\bxcontent\controls\File($arConfig);
+        $input = $this->getTestedObject($arConfig);
 
         $arConfig['template'] = 'CAdminFileDialog::ShowScript';
         ksort($arConfig);
@@ -91,6 +92,26 @@ class FileTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetAllowedExtensions()
+    {
+        $ext = 'ext_' . mt_rand();
+        $ext1 = 'ext_1_' . mt_rand();
+        $ext2 = 'ext_2_' . mt_rand();
+        $arConfig = [
+            'type' => 'file',
+            'label' => 'label_' . mt_rand(),
+            'name' => 'name_' . mt_rand(),
+            'allowedExtensions' => "{$ext},{$ext1},{$ext2},",
+        ];
+
+        $input = $this->getTestedObject($arConfig);
+
+        $this->assertSame(
+            [$ext, $ext1, $ext2],
+            $input->getAllowedExtensions()
+        );
+    }
+
     public function testEmptyNameException()
     {
         $arConfig = [
@@ -99,7 +120,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->setExpectedException('\marvin255\bxcontent\Exception', 'name');
-        $snippet = new \marvin255\bxcontent\controls\File($arConfig);
+        $snippet = $this->getTestedObject($arConfig);
     }
 
     public function testEmptyLabelException()
@@ -110,6 +131,11 @@ class FileTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->setExpectedException('\marvin255\bxcontent\Exception', 'label');
-        $snippet = new \marvin255\bxcontent\controls\File($arConfig);
+        $snippet = $this->getTestedObject($arConfig);
+    }
+
+    protected function getTestedObject(array $config)
+    {
+        return new \marvin255\bxcontent\controls\File($config);
     }
 }

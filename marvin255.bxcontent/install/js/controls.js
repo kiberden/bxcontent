@@ -168,12 +168,46 @@
         var id = getUniqueId();
         var $input = $('<input type="text" id="' + id + '" name="' + name + '" />').appendTo($block);
         var $button = $('<button type="button" onclick="' + id + 'Click(); return false;" />').text('Загрузить файл').appendTo($block);
+        if (typeof value !== 'undefined') {
+            $input.val(value);
+        }
+        var bxJs = this.getBxFileJs(id);
+        $(bxJs).filter('script').each(function (key) {
+            eval(this.innerHTML);
+        });
+    };
+
+    //регистрируем поле
+    $.fn.marvin255bxcontent('registerControl', 'file', FileClass);
+
+
+    /**
+     * Определение поля с изображением
+     */
+    var ImageClass = function (settings, controlsFactory) {
+        BaseControlClass.apply(this, [settings, controlsFactory]);
+    };
+    ImageClass.prototype = Object.create(BaseControlClass.prototype);
+    ImageClass.prototype.constructor = ImageClass;
+    ImageClass.prototype.getBxFileJs = FileClass.prototype.getBxFileJs;
+    ImageClass.prototype._renderInternal = function ($block, name, value) {
+        $block.addClass('marvin255bxcontent-control-file-bitrix');
+        var self = this;
+        var id = getUniqueId();
+        var $input = $('<input type="text" id="' + id + '" name="' + name + '" />').appendTo($block);
+        var $button = $('<button type="button" onclick="' + id + 'Click(); return false;" />').text('Загрузить изображение').appendTo($block);
         $input.on('change', function () {
             var $this = $(this);
             var $image = $this.next('img');
-            if ($this.val().match(/.+\.(png|jpg|jpeg)$/i)) {
+            if ($this.val()) {
                 if (!$image.length) {
                     $image = $('<img />').insertAfter($button);
+                    if (self.settings.width) {
+                        $image.css('width', self.settings.width);
+                    }
+                    if (self.settings.height) {
+                        $image.css('height', self.settings.height);
+                    }
                 }
                 $image.attr('src', $this.val());
             } else if ($image.length) {
@@ -191,7 +225,7 @@
     };
 
     //регистрируем поле
-    $.fn.marvin255bxcontent('registerControl', 'file', FileClass);
+    $.fn.marvin255bxcontent('registerControl', 'image', ImageClass);
 
 
     /**
