@@ -198,15 +198,15 @@
         var $button = $('<button type="button" onclick="' + id + 'Click(); return false;" />').text('Загрузить изображение').appendTo($block);
         $input.on('change', function () {
             var $this = $(this);
-            var $image = $this.next('img');
+            var $image = $this.parent().find('img');
             if ($this.val()) {
                 if (!$image.length) {
                     $image = $('<img />').insertAfter($button);
                     if (self.settings.width) {
-                        $image.css('width', self.settings.width);
+                        $image.css('max-width', self.settings.width);
                     }
                     if (self.settings.height) {
-                        $image.css('height', self.settings.height);
+                        $image.css('max-height', self.settings.height);
                     }
                 }
                 $image.attr('src', $this.val());
