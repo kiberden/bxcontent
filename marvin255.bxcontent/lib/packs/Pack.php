@@ -37,7 +37,7 @@ abstract class Pack extends Base
     /**
      * @inheritdoc
      */
-    public function __construct(array $settings = array())
+    public function __construct(array $settings = [])
     {
         $defaultSettings = $this->getDefaultSettings();
         parent::__construct(array_merge($defaultSettings, $settings));
@@ -63,7 +63,7 @@ abstract class Pack extends Base
      *
      * @param \marvin255\bxcontent\SnippetManager $manager
      */
-    public static function setTo(SnippetManager $manager, $settings = array())
+    public static function setTo(SnippetManager $manager, $settings = [])
     {
         $item = new static($settings);
         $manager->set($item->getCodeForManager(), $item);

@@ -19,7 +19,7 @@ trait SettingsTrait
      *
      * @param array $settings Настройки поля ввода, вида "название поля => значение"
      */
-    public function __construct(array $settings = array())
+    public function __construct(array $settings = [])
     {
         $this->config($this->check($settings));
     }
