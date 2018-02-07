@@ -1,7 +1,6 @@
 # Bxcontent
 
 [![Latest Stable Version](https://poser.pugx.org/marvin255/bxcontent/v/stable.png)](https://packagist.org/packages/marvin255/bxcontent)
-[![Total Downloads](https://poser.pugx.org/marvin255/bxcontent/downloads.png)](https://packagist.org/packages/marvin255/bxcontent)
 [![License](https://poser.pugx.org/marvin255/bxcontent/license.svg)](https://packagist.org/packages/marvin255/bxcontent)
 [![Build Status](https://travis-ci.org/marvin255/bxcontent.svg?branch=master)](https://travis-ci.org/marvin255/bxcontent)
 
@@ -29,7 +28,7 @@
 
     ```javascript
     "require": {
-        "marvin255/bxcontent": "*"
+        "marvin255/bxcontent": "~0.2"
     }
     ```
 
