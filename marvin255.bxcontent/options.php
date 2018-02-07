@@ -5,6 +5,7 @@ use Bitrix\Main\Config\Option;
 use Bitrix\Main\Localization\Loc;
 
 defined('ADMIN_MODULE_NAME') or define('ADMIN_MODULE_NAME', 'marvin255.bxcontent');
+$module_id = ADMIN_MODULE_NAME;
 
 if (!$USER->isAdmin()) {
     $APPLICATION->authForm('Nope');
@@ -25,6 +26,7 @@ $tabControl = new CAdminTabControl('tabControl', [
     ],
 ]);
 
+$isConfigComplete = false;
 if ((!empty($save) || !empty($restore)) && $request->isPost() && check_bitrix_sessid()) {
     if (!empty($restore)) {
         Option::delete(ADMIN_MODULE_NAME);
@@ -49,12 +51,13 @@ if ((!empty($save) || !empty($restore)) && $request->isPost() && check_bitrix_se
             'TYPE' => 'OK',
         ]);
     }
+    $isConfigComplete = true;
 }
 
 $tabControl->begin();
 ?>
 
-<form method="post" action="<?php echo sprintf('%s?mid=%s&lang=%s', $request->getRequestedPage(), urlencode($mid), LANGUAGE_ID); ?>">
+<form method="post" action="<?php echo $APPLICATION->getCurPageParam('mid=' . urlencode($module_id), ['mid']); ?>">
     <?php
         echo bitrix_sessid_post();
         $tabControl->beginNextTab();
@@ -87,7 +90,11 @@ $tabControl->begin();
            onclick="return confirm('<?php echo  addslashes(GetMessage('MAIN_HINT_RESTORE_DEFAULTS_WARNING')); ?>')"
            value="<?php echo Loc::getMessage('MAIN_RESTORE_DEFAULTS'); ?>"
            />
-    <?php
-        $tabControl->end();
-    ?>
 </form>
+
+<?php
+    $tabControl->end();
+    if ($isConfigComplete) {
+        LocalRedirect($APPLICATION->getCurPageParam('mid=' . urlencode($module_id), ['mid']));
+    }
+?>
