@@ -259,16 +259,16 @@
             $moveUp.off('click').on('click', function () {
                 var $upperSibling = $block.prev();
                 if ($upperSibling.length) {
-                    $block.insertBefore($upperSibling);
-                    self.renderSnippet($block, snippet, key);
+                    $block.detach().insertBefore($upperSibling);
+                    $(document).trigger( "updateBitrixScripts" );
                 }
                 return false;
             });
             $moveDown.off('click').on('click', function () {
                 var $lowerSibling = $block.next();
                 if ($lowerSibling.length) {
-                    $block.insertAfter($lowerSibling);
-                    self.renderSnippet($block, snippet, key);
+                    $block.detach().insertAfter($lowerSibling);
+                    $(document).trigger( "updateBitrixScripts" );
                 }
                 return false;
             });

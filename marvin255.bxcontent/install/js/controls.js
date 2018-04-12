@@ -12,6 +12,16 @@
         return 'control_unique_' + _uniqueId;
     };
 
+    /**
+     * Массив скриптов, которыми инициируются поля битрикса
+     */
+    var BitrixScripts = [];
+    $(document).on( "updateBitrixScripts", function( event ) {
+        BitrixScripts.forEach(function(script) {
+            eval(script);
+        });
+    })
+
 
     /**
      * Базовый класс поля со всем необходимым для поля функционалом
@@ -260,6 +270,7 @@
         var bxJs = this.getBxFileJs(id, name);
         $(bxJs).appendTo($input);
         $input.find('textarea').val(value);
+        BitrixScripts.push($(bxJs).filter('script').last().get(0).innerHTML);
         $(bxJs).filter('script').each(function (key) {
             eval(this.innerHTML);
         });
