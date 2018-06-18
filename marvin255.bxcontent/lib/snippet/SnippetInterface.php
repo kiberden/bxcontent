@@ -47,13 +47,6 @@ interface SnippetInterface extends JsonSerializable
     public function getName();
 
     /**
-     * Возвращает название для input с учетом всех родителей данного сниппета.
-     *
-     * @return string
-     */
-    public function getInputName();
-
-    /**
      * Задает значение данного сниппета.
      *
      * @param mixed $value

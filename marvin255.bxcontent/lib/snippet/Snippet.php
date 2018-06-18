@@ -19,7 +19,7 @@ class Snippet implements SnippetInterface
     /**
      * @var string
      */
-    protected $type;
+    protected $type = 'default';
     /**
      * @var string
      */
@@ -38,21 +38,13 @@ class Snippet implements SnippetInterface
     protected $params = [];
 
     /**
-     * @param string $type
      * @param string $name
      * @param array  $params
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($type, $name, array $params = [])
+    public function __construct($name, array $params = [])
     {
-        if (!$this->isItemAValidName($type)) {
-            throw new InvalidArgumentException(
-                'Snippet type must be a non empty string of digits, latins and _'
-            );
-        }
-        $this->type = $type;
-
         if (!$this->isItemAValidName($name)) {
             throw new InvalidArgumentException(
                 'Snippet name must be a non empty string of digits, latins and _'
@@ -95,16 +87,6 @@ class Snippet implements SnippetInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInputName()
-    {
-        return $this->parent
-            ? $this->parent->getInputName() . "[{$this->name}]"
-            : $this->name;
     }
 
     /**
@@ -185,7 +167,6 @@ class Snippet implements SnippetInterface
     {
         $return = $this->getParams();
         $return['name'] = $this->getName();
-        $return['inputName'] = $this->getInputName();
         $return['type'] = $this->getType();
 
         return $return;

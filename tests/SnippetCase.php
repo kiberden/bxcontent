@@ -8,60 +8,14 @@ namespace marvin255\bxcontent\tests;
 abstract class SnippetCase extends BaseCase
 {
     /**
-     * Возвращает класс объекта сниппета.
-     *
-     * @return string
-     */
-    abstract protected function getSnippetClass();
-
-    /**
      * Возвращает объект сниппета для проверки.
      *
      * @param string $name
-     * @param string $type
+     * @param array  $params
      *
      * @return \marvin255\bxcontent\snippet\SnippetInterface
      */
-    protected function createSnippetObject($name = 'default_name', $type = 'default')
-    {
-        $class = $this->getSnippetClass();
-
-        return new $class($type, $name);
-    }
-
-    /**
-     * @test
-     */
-    public function testConstructWrongTypeException()
-    {
-        $class = $this->getSnippetClass();
-
-        $this->setExpectedException('\\InvalidArgumentException');
-        $snippet = new $class('type~~~', 'name');
-    }
-
-    /**
-     * @test
-     */
-    public function testConstructWrongNameException()
-    {
-        $class = $this->getSnippetClass();
-
-        $this->setExpectedException('\\InvalidArgumentException');
-        $snippet = new $class('type', 'name~~~');
-    }
-
-    /**
-     * @test
-     */
-    public function testGetType()
-    {
-        $type = 'type_' . mt_rand();
-
-        $snippet = $this->createSnippetObject('default_name', $type);
-
-        $this->assertSame($type, $snippet->getType());
-    }
+    abstract protected function createSnippetObject($name = 'default_name', array $params = []);
 
     /**
      * @test
@@ -75,35 +29,6 @@ abstract class SnippetCase extends BaseCase
 
         $this->assertSame($snippet, $snippet->setParent($parent));
         $this->assertSame($parent, $snippet->getParent());
-    }
-
-    /**
-     * @test
-     */
-    public function testGetInputName()
-    {
-        $name = 'name_' . mt_rand();
-
-        $snippet = $this->createSnippetObject($name);
-
-        $this->assertSame($name, $snippet->getInputName());
-    }
-
-    /**
-     * @test
-     */
-    public function testGetInputNameWithParent()
-    {
-        $name = 'name_' . mt_rand();
-        $parentName = 'parent_name_' . mt_rand();
-        $parent = $this->getMockBuilder('\\marvin255\\bxcontent\\snippet\\SnippetInterface')
-            ->getMock();
-        $parent->method('getInputName')->will($this->returnValue($parentName));
-
-        $snippet = $this->createSnippetObject($name);
-        $snippet->setParent($parent);
-
-        $this->assertSame("{$parentName}[{$name}]", $snippet->getInputName());
     }
 
     /**
@@ -192,15 +117,13 @@ abstract class SnippetCase extends BaseCase
         $param2Name = 'name_2_' . mt_rand();
         $param2Value = 'value_2_' . mt_rand();
         $snippetName = 'snippet_name_' . mt_rand();
-        $snippetType = 'type_' . mt_rand();
 
-        $snippet = $this->createSnippetObject($snippetName, $snippetType);
+        $snippet = $this->createSnippetObject($snippetName);
         $json = [
             $param1Name => $param1Value,
             $param2Name => $param2Value,
             'name' => $snippetName,
-            'inputName' => $snippetName,
-            'type' => $snippetType,
+            'type' => $snippet->getType(),
         ];
         $snippet->setParams([
             $param1Name => $param1Value,
