@@ -9,6 +9,7 @@
     },
     "autoload": {
         "psr-4": {
+            "marvin255\\bxcontent\\": "marvin255.bxcontent/lib/",
             "marvin255\\bxcontent\\tests\\": "tests/",
             "marvin255\\bxcontent\\installer\\": "installer/"
         }
