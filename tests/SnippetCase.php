@@ -8,6 +8,13 @@ namespace marvin255\bxcontent\tests;
 abstract class SnippetCase extends BaseCase
 {
     /**
+     * Возвращает класс объекта сниппета.
+     *
+     * @return string
+     */
+    abstract protected function getSnippetClass();
+
+    /**
      * Возвращает объект сниппета для проверки.
      *
      * @param string $name
@@ -15,7 +22,34 @@ abstract class SnippetCase extends BaseCase
      *
      * @return \marvin255\bxcontent\snippet\SnippetInterface
      */
-    abstract protected function createSnippetObject($name = 'default_name', $type = 'default');
+    protected function createSnippetObject($name = 'default_name', $type = 'default')
+    {
+        $class = $this->getSnippetClass();
+
+        return new $class($type, $name);
+    }
+
+    /**
+     * @test
+     */
+    public function testConstructWrongTypeException()
+    {
+        $class = $this->getSnippetClass();
+
+        $this->setExpectedException('\\InvalidArgumentException');
+        $snippet = new $class('type~~~', 'name');
+    }
+
+    /**
+     * @test
+     */
+    public function testConstructWrongNameException()
+    {
+        $class = $this->getSnippetClass();
+
+        $this->setExpectedException('\\InvalidArgumentException');
+        $snippet = new $class('type', 'name~~~');
+    }
 
     /**
      * @test
