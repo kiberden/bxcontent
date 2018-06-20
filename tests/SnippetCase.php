@@ -34,19 +34,6 @@ abstract class SnippetCase extends BaseCase
     /**
      * @test
      */
-    public function testSetValue()
-    {
-        $value = 'value_' . mt_rand();
-
-        $snippet = $this->createSnippetObject();
-
-        $this->assertSame($snippet, $snippet->setValue($value));
-        $this->assertSame($value, $snippet->getValue());
-    }
-
-    /**
-     * @test
-     */
     public function testSetParam()
     {
         $emptyParamName = 'empty_name_' . mt_rand();

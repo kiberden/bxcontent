@@ -32,12 +32,8 @@ class ComponentTest extends BaseCase
                 echo $renderedString;
             }));
 
-        $snippet = $this->getMockBuilder('\\marvin255\\bxcontent\\snippet\\SnippetInterface')
-            ->getMock();
-        $snippet->method('getValue')->will($this->returnValue($value));
-
         $renderer = new Component($application, $component, $template);
 
-        $this->assertSame($renderedString, $renderer->render($snippet));
+        $this->assertSame($renderedString, $renderer->render($value));
     }
 }

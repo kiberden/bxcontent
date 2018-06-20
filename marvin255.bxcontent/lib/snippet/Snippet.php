@@ -25,10 +25,6 @@ class Snippet implements SnippetInterface
      */
     protected $name;
     /**
-     * @var mixed
-     */
-    protected $value;
-    /**
      * @var \marvin255\bxcontent\snippet\SnippetInterface
      */
     protected $parent;
@@ -87,24 +83,6 @@ class Snippet implements SnippetInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getValue()
-    {
-        return $this->value;
     }
 
     /**

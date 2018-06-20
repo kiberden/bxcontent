@@ -3,7 +3,6 @@
 namespace marvin255\bxcontent\renderer;
 
 use CMain;
-use marvin255\bxcontent\snippet\SnippetInterface;
 
 /**
  * Объект, который вызывает компонент Битрикса для того, чтобы отобразить сниппет.
@@ -46,14 +45,14 @@ class Component implements RendererInterface
     /**
      * @inheritdoc
      */
-    public function render(SnippetInterface $snippet)
+    public function render(array $value)
     {
         ob_start();
         ob_implicit_flush(false);
         $this->app->includeComponent(
             $this->component,
             $this->template,
-            $snippet->getValue(),
+            $value,
             ['HIDE_ICONS' => 'Y']
         );
 

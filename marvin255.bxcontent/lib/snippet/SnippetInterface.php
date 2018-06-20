@@ -47,22 +47,6 @@ interface SnippetInterface extends JsonSerializable
     public function getName();
 
     /**
-     * Задает значение данного сниппета.
-     *
-     * @param mixed $value
-     *
-     * @return self
-     */
-    public function setValue($value);
-
-    /**
-     * Возвращает значение данного сниппета.
-     *
-     * @return mixed
-     */
-    public function getValue();
-
-    /**
      * Задает параметр настройки сниппета.
      *
      * @param string $name  Название параметра
