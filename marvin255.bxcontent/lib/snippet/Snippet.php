@@ -98,12 +98,6 @@ class Snippet implements SnippetInterface
             );
         }
 
-        if (!is_scalar($value) && !is_array($value) && !is_null($value)) {
-            throw new InvalidArgumentException(
-                'Parameter value must be scalar (string, int, float, etc.), array or null'
-            );
-        }
-
         $this->params[$name] = $value;
 
         return $this;

@@ -64,20 +64,6 @@ abstract class SnippetCase extends BaseCase
     /**
      * @test
      */
-    public function testSetParamValueException()
-    {
-        $paramName = 'name_' . mt_rand();
-        $paramValue = new \stdClass;
-
-        $snippet = $this->createSnippetObject();
-
-        $this->setExpectedException('\\InvalidArgumentException');
-        $snippet->setParam($paramName, $paramValue);
-    }
-
-    /**
-     * @test
-     */
     public function testSetParams()
     {
         $param1Name = 'name_1_' . mt_rand();
