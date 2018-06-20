@@ -83,7 +83,7 @@ abstract class SnippetCase extends BaseCase
         $param1Name = 'name_1_' . mt_rand();
         $param1Value = 'value_1_' . mt_rand();
         $param2Name = 'name_2_' . mt_rand();
-        $param2Value = 'value_2_' . mt_rand();
+        $param2Value = null;
 
         $snippet = $this->createSnippetObject();
         $snippet->setParams([$param2Name => $param2Value]);
@@ -99,24 +99,19 @@ abstract class SnippetCase extends BaseCase
      */
     public function testJsonSerialize()
     {
-        $param1Name = 'name_1_' . mt_rand();
-        $param1Value = 'value_1_' . mt_rand();
-        $param2Name = 'name_2_' . mt_rand();
-        $param2Value = 'value_2_' . mt_rand();
         $snippetName = 'snippet_name_' . mt_rand();
+        $snippetParams = [
+            'param_1_' . mt_rand() => 'param_1_value_' . mt_rand(),
+            'param_2_' . mt_rand() => 'param_2_value_' . mt_rand(),
+        ];
 
         $snippet = $this->createSnippetObject($snippetName);
         $json = [
-            $param1Name => $param1Value,
-            $param2Name => $param2Value,
+            'params' => $snippetParams,
             'name' => $snippetName,
             'type' => $snippet->getType(),
         ];
-        $snippet->setParams([
-            $param1Name => $param1Value,
-            $param2Name => $param2Value,
-        ]);
-        $assertingJson = $snippet->jsonSerialize();
+        $assertingJson = $snippet->setParams($snippetParams)->jsonSerialize();
         ksort($json);
         ksort($assertingJson);
 

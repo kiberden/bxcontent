@@ -98,9 +98,9 @@ class Snippet implements SnippetInterface
             );
         }
 
-        if (!is_scalar($value) && !is_array($value)) {
+        if (!is_scalar($value) && !is_array($value) && !is_null($value)) {
             throw new InvalidArgumentException(
-                'Parameter value must be scalar (string, int, float, etc.) or array'
+                'Parameter value must be scalar (string, int, float, etc.), array or null'
             );
         }
 
@@ -143,9 +143,9 @@ class Snippet implements SnippetInterface
      */
     public function jsonSerialize()
     {
-        $return = $this->getParams();
         $return['name'] = $this->getName();
         $return['type'] = $this->getType();
+        $return['params'] = $this->getParams();
 
         return $return;
     }
