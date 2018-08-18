@@ -13,20 +13,21 @@ Loc::loadMessages(__FILE__);
  * Пользовательское поле, для которого додавляется js конструктор, что позволяет
  * создавать сложный html: слайдеры, аккордеоны и т.д.
  */
-class PropertyTypeContent extends \CUserTypeString
+class PropertyTypeContent
 {
     /**
      * Возвращает описание поля для регистрации обработчика.
      *
      * @return array
      */
-    public function GetUserTypeDescription()
+    public static function GetUserTypeDescription()
     {
         return [
             'PROPERTY_TYPE' => 'S',
             'USER_TYPE' => 'Marvin255Bxcontent',
             'DESCRIPTION' => Loc::getMessage('BX_CONTENT_PROPERTY_TYPE_NAME'),
             'GetPropertyFieldHtml' => [__CLASS__, 'getPropertyFieldHtml'],
+            'GetSearchContent' => [__CLASS__, 'getSearchContent'],
             'ConvertToDB' => [__CLASS__, 'convertToDB'],
             'GetPublicViewHTML' => [__CLASS__, 'getPublicViewHTML'],
             'GetSettingsHTML' => [__CLASS__, 'getSettingsHTML'],
@@ -42,7 +43,7 @@ class PropertyTypeContent extends \CUserTypeString
      *
      * @return array
      */
-    public function convertToDB($arProperty, $value)
+    public static function convertToDB($arProperty, $value)
     {
         $value['VALUE'] = is_array($value['VALUE']) || is_object($value['VALUE'])
             ? json_encode($value['VALUE'])
@@ -59,9 +60,27 @@ class PropertyTypeContent extends \CUserTypeString
      *
      * @return array
      */
-    public function getPublicViewHTML($arProperty, $value)
+    public static function getPublicViewHTML($arProperty, $value)
     {
-        return isset($value['VALUE']) ? SnippetManager::getInstance()->render($value['VALUE']) : null;
+        return isset($value['VALUE'])
+            ? SnippetManager::getInstance()->render($value['VALUE'])
+            : null;
+    }
+
+    /**
+     * Вывод поля в публичной части со сформированным html.
+     *
+     * @param array $arProperty         Массив с описанием свойства
+     * @param array $value              Массив со значениями
+     * @param array $strHTMLControlName Пустой массив
+     *
+     * @return array
+     */
+    public static function getSearchContent($arProperty, $value, $strHTMLControlName)
+    {
+        return isset($value['VALUE'])
+            ? SnippetManager::getInstance()->render($value['VALUE'], true)
+            : null;
     }
 
     /**
@@ -73,7 +92,7 @@ class PropertyTypeContent extends \CUserTypeString
      *
      * @return string
      */
-    public function getSettingsHTML($arProperty, $strHTMLControlName, &$arPropertyFields)
+    public static function getSettingsHTML($arProperty, $strHTMLControlName, &$arPropertyFields)
     {
         $return = '';
         $allSnippets = SnippetManager::getInstance()->getSnippetsList();
@@ -112,7 +131,7 @@ class PropertyTypeContent extends \CUserTypeString
      *
      * @return array
      */
-    public function prepareSettings($arFields)
+    public static function prepareSettings($arFields)
     {
         return isset($arFields['USER_TYPE_SETTINGS'])
             ? $arFields['USER_TYPE_SETTINGS']
@@ -128,7 +147,7 @@ class PropertyTypeContent extends \CUserTypeString
      *
      * @return string
      */
-    public function getPropertyFieldHtml($arProperty, $value, $strHTMLControlName)
+    public static function getPropertyFieldHtml($arProperty, $value, $strHTMLControlName)
     {
         CJSCore::Init(['jquery']);
         SnippetManager::getInstance()->registerAssets(Asset::getInstance());

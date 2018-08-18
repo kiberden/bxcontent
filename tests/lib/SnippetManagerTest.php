@@ -286,4 +286,37 @@ class SnippetManagerTest extends \PHPUnit_Framework_TestCase
             $manager->render($toRender)
         );
     }
+
+    public function testRenderSearchable()
+    {
+        $toRender = [
+            ['type' => 'snippet_1', 'key' => 'value_' . mt_rand()],
+            ['type' => 'snippet_2', 'key_2' => 'value_2_' . mt_rand()],
+            ['type' => 'snippet_3', 'key_3' => 'value_3_' . mt_rand()],
+        ];
+        $return1 = 'return_' . mt_rand();
+        $return3 = 'return_3_' . mt_rand();
+
+        $snippet = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')->getMock();
+        $snippet->method('render')
+            ->with($this->equalTo(['key' => $toRender[0]['key']]))
+            ->will($this->returnValue($return1));
+        $snippet->method('isSearchable')
+            ->will($this->returnValue(false));
+
+        $snippet3 = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')->getMock();
+        $snippet3->method('render')
+            ->with($this->equalTo(['key_3' => $toRender[2]['key_3']]))
+            ->will($this->returnValue($return3));
+        $snippet3->method('isSearchable')
+            ->will($this->returnValue(true));
+
+        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
+        $manager->set('snippet_3', $snippet3);
+        $manager->set('snippet_1', $snippet);
+
+        $this->assertSame($return3, $manager->render($toRender, true));
+        $this->assertSame($return1, $manager->render($toRender, false));
+        $this->assertSame($return1 . $return3, $manager->render($toRender));
+    }
 }

@@ -42,6 +42,37 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testIsSearchable()
+    {
+        $controlKey = 'controls_key_' . mt_rand();
+        $control = $this->getMockBuilder('\marvin255\bxcontent\controls\ControlInterface')
+            ->getMock();
+        $control->method('getName')->will($this->returnValue($controlKey));
+
+        $arConfigDefault = [
+            'label' => 'label_' . mt_rand(),
+            'controls' => [$control],
+        ];
+        $arConfigSearchable = [
+            'label' => 'label_' . mt_rand(),
+            'controls' => [$control],
+            'is_searchable' => true,
+        ];
+        $arConfigNotSearchable = [
+            'label' => 'label_' . mt_rand(),
+            'controls' => [$control],
+            'is_searchable' => false,
+        ];
+
+        $defaultSnippet = new \marvin255\bxcontent\snippets\Base($arConfigDefault);
+        $searchableSnippet = new \marvin255\bxcontent\snippets\Base($arConfigSearchable);
+        $notsearchableSnippet = new \marvin255\bxcontent\snippets\Base($arConfigNotSearchable);
+
+        $this->assertSame(true, $defaultSnippet->isSearchable());
+        $this->assertSame(true, $searchableSnippet->isSearchable());
+        $this->assertSame(false, $notsearchableSnippet->isSearchable());
+    }
+
     public function testRender()
     {
         $controlKey = 'controls_key_' . mt_rand();

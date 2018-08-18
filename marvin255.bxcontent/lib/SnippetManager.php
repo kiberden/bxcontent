@@ -275,16 +275,20 @@ class SnippetManager implements JsonSerializable
      * с настройками конкретных сниппетов.
      *
      * @param array|string $toRender
+     * @param bool|null    $isSearchable
      *
      * @return string
      */
-    public function render($toRender)
+    public function render($toRender, $isSearchable = null)
     {
         $return = '';
         $toRender = is_string($toRender) ? json_decode($toRender, true) : $toRender;
         if (is_array($toRender)) {
             foreach ($toRender as $item) {
                 if (empty($item['type']) || !($snippet = $this->get($item['type']))) {
+                    continue;
+                }
+                if ($isSearchable !== null && $snippet->isSearchable() !== (bool) $isSearchable) {
                     continue;
                 }
                 unset($item['type']);

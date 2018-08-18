@@ -34,6 +34,16 @@ class Base implements SnippetInterface
     /**
      * @inheritdoc
      */
+    public function isSearchable()
+    {
+        return $this->getSetting('is_searchable') === null
+            ? true
+            : (bool) $this->getSetting('is_searchable');
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function render(array $snippetValues)
     {
         $view = $this->getSetting('view');

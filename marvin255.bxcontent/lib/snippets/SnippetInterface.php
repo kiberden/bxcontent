@@ -23,6 +23,13 @@ interface SnippetInterface
     public function getControls();
 
     /**
+     * Возвращает правду, если контент сниппета должен индексироваться для поиска.
+     *
+     * @return bool
+     */
+    public function isSearchable();
+
+    /**
      * Возвращет строку с html для сниппета, заданного в массиве.
      *
      * @param array $snippetValues Массив вида "название поля => значение поля" для создания сниппета
