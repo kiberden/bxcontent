@@ -60,7 +60,7 @@ class Composer
         return [
             $libFolder . '/install/js' => $bitrixFolder . '/js/' . self::$vendor . '.' . self::$module,
             $libFolder . '/install/css' => $bitrixFolder . '/css/' . self::$vendor . '.' . self::$module,
-            $libFolder . '/install/components' => self::getComponentsFolder($event) . self::$vendor . '.' . self::$module,
+            $libFolder . '/install/components' => self::getComponentsFolder($event) . '/' . self::$vendor . '.' . self::$module,
         ];
     }
 
