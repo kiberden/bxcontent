@@ -60,13 +60,14 @@ class Composer
         return [
             $libFolder . '/install/js' => $bitrixFolder . '/js/' . self::$vendor . '.' . self::$module,
             $libFolder . '/install/css' => $bitrixFolder . '/css/' . self::$vendor . '.' . self::$module,
+            $libFolder . '/install/components' => self::getComponentsFolder($event) . self::$vendor . '.' . self::$module,
         ];
     }
 
     /**
      * Устанавливает модуль в структуру битрикса.
      *
-     * **Внимание** перед установкой или обновлением удаляет страрую весрию.
+     * **Внимание** перед установкой или обновлением удаляет страрую версию.
      *
      * @param \Composer\Script\Event $event
      */
@@ -132,6 +133,27 @@ class Composer
             $bitrixFolder = $extras['install-bitrix-modules'];
         } else {
             $bitrixFolder = 'web/local/modules';
+        }
+
+        return (string) realpath($projectRootPath . '/' . trim($bitrixFolder, '/'));
+    }
+
+    /**
+     * Возвращает полный путь до папки модулей.
+     *
+     * @param \Composer\Script\Event $event
+     *
+     * @return string
+     */
+    protected static function getComponentsFolder(Event $event)
+    {
+        $projectRootPath = rtrim(dirname(Factory::getComposerFile()), '/');
+        $extras = $event->getComposer()->getPackage()->getExtra();
+
+        if (!empty($extras['install-bitrix-components'])) {
+            $bitrixFolder = $extras['install-bitrix-components'];
+        } else {
+            $bitrixFolder = 'web/local/components';
         }
 
         return (string) realpath($projectRootPath . '/' . trim($bitrixFolder, '/'));

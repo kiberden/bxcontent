@@ -102,6 +102,13 @@ class marvin255_bxcontent extends CModule
             true
         );
 
+        CopyDirFiles(
+            $this->getInstallatorPath() . '/components',
+            $this->getComponentPath('components') . '/' . $this->MODULE_ID,
+            true,
+            true
+        );
+
         return true;
     }
 
@@ -114,6 +121,7 @@ class marvin255_bxcontent extends CModule
     {
         Directory::deleteDirectory(Application::getDocumentRoot() . '/bitrix/js/' . $this->MODULE_ID);
         Directory::deleteDirectory(Application::getDocumentRoot() . '/bitrix/css/' . $this->MODULE_ID);
+        Directory::deleteDirectory($this->getComponentPath('components') . '/' . $this->MODULE_ID);
 
         return true;
     }
@@ -151,5 +159,23 @@ class marvin255_bxcontent extends CModule
     public function getInstallatorPath()
     {
         return str_replace('\\', '/', __DIR__);
+    }
+
+    /**
+     * Возвращает путь к папке, в которую будут установлены компоненты модуля.
+     *
+     * @param string $type тип компонентов для установки (components, js, admin и т.д.)
+     *
+     * @return string
+     */
+    public function getComponentPath($type = 'components')
+    {
+        if ($type === 'admin') {
+            $base = Application::getDocumentRoot() . '/bitrix';
+        } else {
+            $base = dirname(dirname(dirname($this->getInstallatorPath())));
+        }
+
+        return $base . '/' . str_replace(['/', '.'], '', $type);
     }
 }

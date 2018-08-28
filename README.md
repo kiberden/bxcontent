@@ -28,7 +28,7 @@
 
     ```javascript
     "require": {
-        "marvin255/bxcontent": "~0.2"
+        "marvin255/bxcontent": "~0.4"
     }
     ```
 
