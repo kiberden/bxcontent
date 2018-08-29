@@ -76,7 +76,7 @@
                 var control = controlsFactory.createInstance(settings.controls[k].type, settings.controls[k]);
                 if (control) {
                     control.setParent(self);
-                    controls.set(k, control);
+                    controls.set(settings.controls[k].name, control);
                 }
             }
         }
