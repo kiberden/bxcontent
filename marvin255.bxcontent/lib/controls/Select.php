@@ -56,9 +56,9 @@ class Select extends Base
     {
         $settings = parent::check($settings);
 
-        if (empty($settings['list']) || !is_array($settings['list'])) {
+        if (!isset($settings['list']) || !is_array($settings['list'])) {
             throw new Exception(
-                "Contol's list must be a non empty array instance"
+                "Contol's list parameter must be an array instance"
             );
         }
 
