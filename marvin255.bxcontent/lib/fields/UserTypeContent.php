@@ -113,9 +113,9 @@ class UserTypeContent
     {
         return 'text';
     }
-    
+
     /**
-     * Преобразуем массив в строку перед сохранением результатов поля
+     * Преобразуем массив в строку перед сохранением результатов поля.
      *
      * @return string
      */
@@ -124,6 +124,7 @@ class UserTypeContent
         $value = is_array($value) || is_object($value)
             ? json_encode($value)
             : $value;
+
         return $value;
     }
 }
