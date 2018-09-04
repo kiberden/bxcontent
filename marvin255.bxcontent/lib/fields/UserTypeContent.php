@@ -113,4 +113,17 @@ class UserTypeContent
     {
         return 'text';
     }
+    
+    /**
+     * Преобразуем массив в строку перед сохранением результатов поля
+     *
+     * @return string
+     */
+    public function OnBeforeSave($arUserField, $value)
+    {
+        $value = is_array($value) || is_object($value)
+            ? json_encode($value)
+            : $value;
+        return $value;
+    }
 }
