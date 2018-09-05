@@ -4,6 +4,38 @@ namespace marvin255\bxcontent\tests\lib;
 
 class SnippetManagerTest extends \PHPUnit_Framework_TestCase
 {
+    public function testSetListInitializationCallbackAlreadyInitializedException()
+    {
+        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
+        $manager->getSnippetsList();
+
+        $this->setExpectedException('\marvin255\bxcontent\Exception');
+        $manager->setListInitializationCallback(function ($manager) {});
+    }
+
+    public function testSetListInitializationCallbackNotCallableException()
+    {
+        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
+
+        $this->setExpectedException('\marvin255\bxcontent\Exception');
+        $manager->setListInitializationCallback(123);
+    }
+
+    public function testSetListInitializationCallback()
+    {
+        $name = 'type_' . mt_rand();
+        $snippet = $this->getMockBuilder('\marvin255\bxcontent\snippets\SnippetInterface')
+            ->getMock();
+
+        $manager = \marvin255\bxcontent\SnippetManager::getInstance(true);
+        $manager->setListInitializationCallback(function ($manager) use ($name, $snippet) {
+            $manager->set($name, $snippet);
+        });
+
+        $this->assertSame($snippet, $manager->get($name));
+        $this->assertSame([$name => $snippet], $manager->getSnippetsList());
+    }
+
     public function testSet()
     {
         $name = 'type_' . mt_rand();

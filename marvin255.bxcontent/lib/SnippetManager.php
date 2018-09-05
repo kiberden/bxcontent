@@ -38,6 +38,18 @@ class SnippetManager implements JsonSerializable
      * @var array
      */
     protected $css = [];
+    /**
+     * Флаг, который указывает, что список сниппетов был иницализирован.
+     *
+     * @var bool
+     */
+    protected $isListInitialized = false;
+    /**
+     * Коллбэк, который будет запущен перед инициализацией списка.
+     *
+     * @var callbable|null
+     */
+    protected $listInitializationCallback;
 
     /**
      * Возвращает объект singleton, если он уже создан, либо создает новый
@@ -59,6 +71,29 @@ class SnippetManager implements JsonSerializable
      */
     private function __construct()
     {
+    }
+
+    /**
+     * Добавляет коллбэк для инициализации сниппета.
+     *
+     * @param callable $callback
+     *
+     * @return \marvin255\bxcontent\SnippetManager
+     *
+     * @throws \marvin255\bxcontent\Exception
+     */
+    public function setListInitializationCallback($callback)
+    {
+        if ($this->isListInitialized) {
+            throw new Exception('Snippet list already initialized');
+        }
+        if (!is_callable($callback)) {
+            throw new Exception('Callback parameter must be a callable instance');
+        }
+
+        $this->listInitializationCallback = $callback;
+
+        return $this;
     }
 
     /**
@@ -127,6 +162,13 @@ class SnippetManager implements JsonSerializable
      */
     public function getSnippetsList()
     {
+        if (!$this->isListInitialized) {
+            $this->isListInitialized = true;
+            if ($this->listInitializationCallback) {
+                call_user_func($this->listInitializationCallback, $this);
+            }
+        }
+
         return $this->snippets;
     }
 
