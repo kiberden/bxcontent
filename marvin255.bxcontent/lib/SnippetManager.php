@@ -94,7 +94,9 @@ class SnippetManager implements JsonSerializable
     public function remove($name)
     {
         if ($this->get($name) === null) {
-            throw new Exception('Can\'t find snippet with type ' . $name . ' to unset');
+            throw new Exception(
+                "Can't find snippet with type {$name} to unset"
+            );
         }
         $name = $this->normalizeSnippetName($name);
         unset($this->snippets[$name]);
@@ -112,8 +114,9 @@ class SnippetManager implements JsonSerializable
     public function get($name)
     {
         $name = $this->normalizeSnippetName($name);
+        $list = $this->getSnippetsList();
 
-        return isset($this->snippets[$name]) ? $this->snippets[$name] : null;
+        return isset($list[$name]) ? $list[$name] : null;
     }
 
     /**
@@ -128,18 +131,6 @@ class SnippetManager implements JsonSerializable
     }
 
     /**
-     * Приводит имена сниппетов в единообразный вид.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function normalizeSnippetName($name)
-    {
-        return strtolower(trim($name));
-    }
-
-    /**
      * Приводит данные менеджера сниппетов к представлению, которое будет отправлено в json.
      *
      * @return array
@@ -147,7 +138,7 @@ class SnippetManager implements JsonSerializable
     public function jsonSerialize()
     {
         $return = [];
-        foreach ($this->snippets as $name => $snippet) {
+        foreach ($this->getSnippetsList() as $name => $snippet) {
             $return[$name] = [
                 'label' => $snippet->getLabel(),
                 'controls' => $snippet->getControls(),
@@ -173,6 +164,8 @@ class SnippetManager implements JsonSerializable
      * @param array $js
      *
      * @return \marvin255\bxcontent\SnippetManager
+     *
+     * @throws \marvin255\bxcontent\Exception
      */
     public function setJs(array $js)
     {
@@ -190,11 +183,13 @@ class SnippetManager implements JsonSerializable
      * @param string $script
      *
      * @return \marvin255\bxcontent\SnippetManager
+     *
+     * @throws \marvin255\bxcontent\Exception
      */
     public function addJs($script)
     {
         if (trim($script) === '') {
-            throw new Exception('Script name can\'t be blank');
+            throw new Exception("Script name can't be blank");
         }
         $this->js[] = $script;
 
@@ -217,6 +212,8 @@ class SnippetManager implements JsonSerializable
      * @param array $css
      *
      * @return \marvin255\bxcontent\SnippetManager
+     *
+     * @throws \marvin255\bxcontent\Exception
      */
     public function setCss(array $css)
     {
@@ -234,11 +231,13 @@ class SnippetManager implements JsonSerializable
      * @param string $style
      *
      * @return \marvin255\bxcontent\SnippetManager
+     *
+     * @throws \marvin255\bxcontent\Exception
      */
     public function addCss($style)
     {
         if (trim($style) === '') {
-            throw new Exception('Stylesheet name can\'t be blank');
+            throw new Exception("Stylesheet name can't be blank");
         }
         $this->css[] = $style;
 
@@ -297,5 +296,17 @@ class SnippetManager implements JsonSerializable
         }
 
         return $return;
+    }
+
+    /**
+     * Приводит имена сниппетов в единообразный вид.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function normalizeSnippetName($name)
+    {
+        return strtolower(trim($name));
     }
 }
