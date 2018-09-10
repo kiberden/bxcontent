@@ -99,7 +99,7 @@ class UserTypeContent
             : 'null';
 
         $return = '<textarea style="display: none;" id="' . $id . '" name="' . htmlentities($control['NAME']) . '">';
-        $return .= htmlentities(isset($field['VALUE']) ? $field['VALUE'] : '');
+        $return .= htmlentities(isset($field['VALUE']) ? json_encode(json_decode($field['VALUE'], true)) : '');
         $return .= '</textarea>';
         $return .= "<script>jQuery(document).on('ready', function () { jQuery('#{$id}').marvin255bxcontent({$options}); });</script>";
 
@@ -122,8 +122,8 @@ class UserTypeContent
     public function OnBeforeSave($arUserField, $value)
     {
         $value = is_array($value) || is_object($value)
-            ? json_encode($value)
-            : $value;
+            ? json_encode($value, JSON_UNESCAPED_UNICODE)
+            : json_encode(json_decode($value, true), JSON_UNESCAPED_UNICODE);
 
         return $value;
     }

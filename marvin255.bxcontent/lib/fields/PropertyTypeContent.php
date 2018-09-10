@@ -46,8 +46,8 @@ class PropertyTypeContent
     public static function convertToDB($arProperty, $value)
     {
         $value['VALUE'] = is_array($value['VALUE']) || is_object($value['VALUE'])
-            ? json_encode($value['VALUE'])
-            : $value['VALUE'];
+            ? json_encode($value['VALUE'], JSON_UNESCAPED_UNICODE)
+            : json_encode(json_decode($value['VALUE'], true), JSON_UNESCAPED_UNICODE);
 
         return $value;
     }
@@ -158,7 +158,7 @@ class PropertyTypeContent
             : 'null';
 
         $return = '<textarea style="display: none;" id="' . $id . '" name="' . htmlentities($strHTMLControlName['VALUE']) . '">';
-        $return .= htmlentities($value['VALUE']);
+        $return .= htmlentities(json_encode(json_decode($value['VALUE'], true)));
         $return .= '</textarea>';
         $return .= "<script>jQuery(document).on('ready', function () { jQuery('#{$id}').marvin255bxcontent({$options}); });</script>";
 
